@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FundTrustIQ — Governance intelligence for mutual fund and ETF boards</title>
+<meta name="description" content="FundTrustIQ is an AI-native governance platform for mutual fund and ETF boards, multi-series trusts, and their service ecosystem.">
+<meta name="theme-color" content="#f3f6f6">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/fraunces-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<script>document.documentElement.classList.replace("no-js","js")</script>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- Shared SVG defs: crystal gradients + facet icons -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="g-sky" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eaf7fd"/><stop offset=".55" stop-color="#8fd1f1"/><stop offset="1" stop-color="#58bceb"/></linearGradient>
+    <linearGradient id="g-navy" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6f88b3"/><stop offset=".6" stop-color="#1f396d"/><stop offset="1" stop-color="#0b1f3f"/></linearGradient>
+    <linearGradient id="g-blue" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c4e8f8"/><stop offset=".5" stop-color="#3a8fc4"/><stop offset="1" stop-color="#00609e"/></linearGradient>
+    <linearGradient id="g-glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dfe9ef"/></linearGradient>
+    <linearGradient id="g-ice" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ffffff" stop-opacity=".95"/><stop offset="1" stop-color="#c4e8f8" stop-opacity=".9"/></linearGradient>
+    <filter id="f-soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>
+
+    <!-- Connect: pyramid -->
+    <symbol id="ic-connect" viewBox="0 0 120 120">
+      <ellipse cx="60" cy="104" rx="38" ry="6" fill="#0b1f3f" opacity=".08" filter="url(#f-soft)"/>
+      <path d="M60 14 22 96h38z" fill="url(#g-glass)"/>
+      <path d="M60 14 98 96H60z" fill="url(#g-sky)"/>
+      <path d="M60 14 60 96 42 96z" fill="url(#g-ice)" opacity=".7"/>
+      <path d="M60 14 22 96h76z" fill="none" stroke="#fff" stroke-opacity=".7"/>
+    </symbol>
+    <!-- Orchestrate: three interlocking triangles -->
+    <symbol id="ic-orchestrate" viewBox="0 0 120 120">
+      <ellipse cx="60" cy="104" rx="42" ry="6" fill="#0b1f3f" opacity=".08" filter="url(#f-soft)"/>
+      <path d="M38 40 14 96h48z" fill="url(#g-glass)"/>
+      <path d="M82 40 58 96h48z" fill="url(#g-sky)" opacity=".92"/>
+      <path d="M60 14 34 70h52z" fill="url(#g-blue)" opacity=".88"/>
+      <path d="M60 14 60 70 34 70z" fill="#fff" opacity=".35"/>
+    </symbol>
+    <!-- Understand: faceted star -->
+    <symbol id="ic-understand" viewBox="0 0 120 120">
+      <ellipse cx="60" cy="106" rx="30" ry="5" fill="#0b1f3f" opacity=".08" filter="url(#f-soft)"/>
+      <path d="M60 10 70 50 60 60z" fill="url(#g-sky)"/><path d="M60 10 50 50 60 60z" fill="url(#g-glass)"/>
+      <path d="M110 60 70 70 60 60z" fill="url(#g-blue)"/><path d="M110 60 70 50 60 60z" fill="url(#g-sky)"/>
+      <path d="M60 110 50 70 60 60z" fill="url(#g-glass)"/><path d="M60 110 70 70 60 60z" fill="url(#g-blue)" opacity=".85"/>
+      <path d="M10 60 50 50 60 60z" fill="url(#g-glass)"/><path d="M10 60 50 70 60 60z" fill="url(#g-ice)"/>
+    </symbol>
+    <!-- Evidence: faceted shield -->
+    <symbol id="ic-evidence" viewBox="0 0 120 120">
+      <ellipse cx="60" cy="108" rx="30" ry="5" fill="#0b1f3f" opacity=".08" filter="url(#f-soft)"/>
+      <path d="M60 12 20 26v30c0 24 17 40 40 48z" fill="url(#g-glass)"/>
+      <path d="M60 12 100 26v30c0 24-17 40-40 48z" fill="url(#g-sky)"/>
+      <path d="M60 12 60 104 40 56z" fill="url(#g-ice)" opacity=".8"/>
+      <path d="M60 12 60 104 80 56z" fill="url(#g-blue)" opacity=".45"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="nav" data-nav>
+  <div class="nav__inner">
+    <a class="brand" href="#top" aria-label="FundTrust IQ home">
+      <img src="assets/img/logo-mark.svg" alt="" width="30" height="26">
+      <span class="brand__word">FundTrust<span> IQ</span></span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <div class="nav__item has-menu">
+        <button class="nav__link" aria-expanded="false" aria-controls="menu-platform" data-menu-btn>Platform</button>
+        <div class="menu" id="menu-platform" data-menu>
+          <div class="menu__grid">
+            <a class="menu-card" href="#solution"><svg aria-hidden="true"><use width="100%" height="100%" href="#ic-connect"/></svg><span class="menu-card__t">Connect</span><span class="menu-card__d">One governed workspace for every source.</span></a>
+            <a class="menu-card" href="#solution"><svg aria-hidden="true"><use width="100%" height="100%" href="#ic-orchestrate"/></svg><span class="menu-card__t">Orchestrate</span><span class="menu-card__d">Integration across the trust partners.</span></a>
+            <a class="menu-card" href="#solution"><svg aria-hidden="true"><use width="100%" height="100%" href="#ic-understand"/></svg><span class="menu-card__t">Understand</span><span class="menu-card__d">AI co-pilot for board members and partners.</span></a>
+            <a class="menu-card" href="#solution"><svg aria-hidden="true"><use width="100%" height="100%" href="#ic-evidence"/></svg><span class="menu-card__t">Evidence</span><span class="menu-card__d">Exception monitoring, reporting, and analytics.</span></a>
+          </div>
+        </div>
+      </div>
+      <a class="nav__link" href="#ai">AI skills</a>
+      <a class="nav__link" href="#pricing">Pricing</a>
+      <a class="nav__link" href="#engagement">Engagement</a>
+    </nav>
+    <a class="nav__cta link-u" href="#contact">Request a demo</a>
+    <button class="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" data-burger><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
+    <a href="#solution">Platform</a><a href="#modules">Modules</a><a href="#ai">AI skills</a><a href="#pricing">Pricing</a><a href="#engagement">Engagement</a><a href="#contact">Request a demo ↳</a>
+  </div>
+</header>
+
+<main id="main">
+<!-- ───────────── HERO ───────────── -->
+<section class="hero" id="top" aria-labelledby="hero-h">
+  <div class="hero__art" aria-hidden="true" data-hero-art></div>
+  <div class="hero__copy wrap">
+    <p class="eyebrow reveal">Governance intelligence for mutual fund and ETF boards</p>
+    <h1 id="hero-h" class="display split" data-split>Where trust<br>meets innovation.</h1>
+    <p class="lead reveal" style="--d:.35s">An AI-native governance platform for fund boards, multi-series trusts, and their service ecosystem.</p>
+    <a class="cta reveal" style="--d:.5s" href="#solution">Explore the platform <span class="cta__arr" aria-hidden="true">↳</span></a>
+  </div>
+</section>
+
+<!-- ───────────── ROLES MARQUEE ───────────── -->
+<section class="strip" aria-label="Who uses FundTrustIQ">
+  <p class="strip__label">One workspace for every<br>party around the board</p>
+  <div class="marquee" data-marquee>
+    <ul class="marquee__track">
+      <li>Board of Trustees</li><li>Trust COO / CFO</li><li>Compliance</li><li>Legal</li><li>Custodian</li><li>Transfer Agent</li><li>Administrator</li><li>Distributor</li><li>Auditor</li><li>Fund Sponsor / Investment Advisor / Sub-Advisor</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ───────────── STATEMENT ───────────── -->
+<section class="statement" aria-labelledby="st-h">
+  <div class="wrap narrow center">
+    <h2 id="st-h" class="h1 reveal">Fund boards oversee more than <span class="nowrap">$70T in assets</span></h2>
+    <p class="body-lg reveal" style="--d:.1s">Yet they rely on generic portals built for document distribution—not 1940 Act governance.</p>
+  </div>
+  <ul class="facts wrap">
+    <li class="fact reveal"><svg aria-hidden="true"><use width="100%" height="100%" href="#ic-understand"/></svg><span class="fact__k">No vertical-native</span><span class="fact__v">board-governance platform</span></li>
+    <li class="fact reveal" style="--d:.1s"><svg aria-hidden="true"><use width="100%" height="100%" href="#ic-connect"/></svg><span class="fact__k" data-count="70" data-prefix="$" data-suffix="T+">$70T+</span><span class="fact__v">assets overseen by target boards</span></li>
+    <li class="fact reveal" style="--d:.2s"><svg aria-hidden="true"><use width="100%" height="100%" href="#ic-orchestrate"/></svg><span class="fact__k"><span data-count="1000" data-sep>1,000</span> U.S. fund boards</span><span class="fact__v">15,000–20,000 funds &amp; ETFs</span></li>
+  </ul>
+</section>
+
+<!-- ───────────── STICKY STORY ───────────── -->
+<section class="story" aria-label="How FundTrustIQ fits the board" data-story>
+  <div class="story__pin">
+    <div class="story__text">
+      <p class="h1 story__line is-on" data-line>Trustees hold the<br>judgment and authority</p>
+      <p class="h1 story__line" data-line>FundTrustIQ prepares,<br>compares, flags, documents</p>
+    </div>
+    <div class="story__gem" aria-hidden="true" data-gem>
+      <svg viewBox="0 0 300 300">
+        <g class="gem">
+          <path d="M150 20 262 85 150 150z" fill="url(#g-sky)"/>
+          <path d="M262 85 262 215 150 150z" fill="url(#g-navy)"/>
+          <path d="M262 215 150 280 150 150z" fill="url(#g-blue)"/>
+          <path d="M150 280 38 215 150 150z" fill="url(#g-glass)"/>
+          <path d="M38 215 38 85 150 150z" fill="url(#g-ice)"/>
+          <path d="M38 85 150 20 150 150z" fill="url(#g-glass)"/>
+          <path d="M150 20 262 85 262 215 150 280 38 215 38 85z" fill="none" stroke="#fff" stroke-opacity=".6"/>
+        </g>
+      </svg>
+    </div>
+    <ul class="story__tags">
+      <li data-tag>Board materials</li><li data-tag>Fund data</li><li data-tag>Committee workflows</li><li data-tag>Oversight evidence</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ───────────── PROBLEM CAROUSEL ───────────── -->
+<section class="problem" id="problem" aria-labelledby="pb-h">
+  <div class="wrap">
+    <p class="eyebrow reveal">The problem</p>
+    <h2 id="pb-h" class="h2 reveal measure">Fund board oversight runs on fragmented, manual workflows</h2>
+  </div>
+  <div class="slider" data-slider>
+    <div class="slider__track" data-track tabindex="0" aria-label="Problems, scrollable">
+      <article class="slide"><span class="slide__n">01</span><h3 class="h4">Manual coordination across providers</h3><p>Board support staff spend cycles collecting, reconciling, and validating materials.</p></article>
+      <article class="slide"><span class="slide__n">02</span><h3 class="h4">Static board books hide change</h3><p>Trustees receive documents, not connected insight into deltas, trends, and exceptions.</p></article>
+      <article class="slide"><span class="slide__n">03</span><h3 class="h4">Reactive compliance oversight</h3><p>Issues often surface late, after reports are compiled or meetings are underway.</p></article>
+      <article class="slide"><span class="slide__n">04</span><h3 class="h4">Fragmented evidence and actions</h3><p>Decisions, follow-ups, source documents, and approvals are difficult to trace end-to-end.</p></article>
+    </div>
+    <div class="slider__dots" data-dots role="tablist" aria-label="Choose problem"></div>
+  </div>
+  <p class="wrap kicker reveal">More time preparing. <span>Less time on informed oversight.</span></p>
+</section>
+
+<!-- ───────────── SOLUTION LIST ───────────── -->
+<section class="solution" id="solution" aria-labelledby="so-h">
+  <div class="wrap">
+    <p class="eyebrow reveal">The solution</p>
+    <h2 id="so-h" class="h2 reveal measure">From static board books to continuous governance intelligence</h2>
+    <ol class="plist" data-plist>
+      <li class="prow" data-prow>
+        <h3 class="prow__t">Connect<small>Single management portal</small></h3>
+        <svg class="prow__ic" aria-hidden="true"><use width="100%" height="100%" href="#ic-connect"/></svg>
+        <p class="prow__d">Ingest, organize, validate, and route materials from internal and service-provider sources—one governed workspace.</p>
+      </li>
+      <li class="prow" data-prow>
+        <h3 class="prow__t">Orchestrate<small>Integration across the trust partners</small></h3>
+        <svg class="prow__ic" aria-hidden="true"><use width="100%" height="100%" href="#ic-orchestrate"/></svg>
+        <p class="prow__d">Integrate data and documents across Legal, Compliance, Custodian, and Distribution partners to make the Investment Advisor more efficient and support board report submissions. Eliminate duplicate requests.</p>
+      </li>
+      <li class="prow" data-prow>
+        <h3 class="prow__t">Understand<small>AI agents / co-pilot</small></h3>
+        <svg class="prow__ic" aria-hidden="true"><use width="100%" height="100%" href="#ic-understand"/></svg>
+        <p class="prow__d">Summarize, compare, detect change, and surface exceptions. A digital AI companion, customizable for every board member, that summarizes, chats with documents, redlines against their rules, and annotates.</p>
+      </li>
+      <li class="prow" data-prow>
+        <h3 class="prow__t">Evidence<small>Exception monitoring &amp; analytics</small></h3>
+        <svg class="prow__ic" aria-hidden="true"><use width="100%" height="100%" href="#ic-evidence"/></svg>
+        <p class="prow__d">Preserve source-linked decisions, actions, controls, and audit-ready records.</p>
+      </li>
+    </ol>
+    <ul class="outcomes">
+      <li class="reveal">Less manual preparation</li><li class="reveal" style="--d:.08s">Faster pre-read</li><li class="reveal" style="--d:.16s">Earlier issue visibility</li><li class="reveal" style="--d:.24s">Defensible oversight</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ───────────── MODULES ───────────── -->
+<section class="modules" id="modules" aria-labelledby="mo-h">
+  <div class="wrap modules__head">
+    <div>
+      <p class="eyebrow reveal">One platform for fund board governance</p>
+      <h2 id="mo-h" class="h2 reveal">Designed for 1940 Act governance—not generic board document distribution</h2>
+    </div>
+    <p class="body reveal">Purpose-built workflows for mutual fund and ETF boards, committees, advisers, and fund-service partners.</p>
+  </div>
+  <div class="wrap"><div class="cards">
+    <a class="card reveal" href="#contact"><span class="card__n">01</span><h3 class="h4">Board &amp; Committee Workspaces</h3><p>Meetings, agendas, actions, approvals, and committee workspaces.</p><span class="card__line" aria-hidden="true"></span></a>
+    <a class="card reveal" style="--d:.06s" href="#contact"><span class="card__n">02</span><h3 class="h4">Board Package Automation</h3><p>Collect, organize, validate, and publish meeting-ready materials.</p><span class="card__line" aria-hidden="true"></span></a>
+    <a class="card reveal" style="--d:.12s" href="#contact"><span class="card__n">03</span><h3 class="h4">Fund &amp; Adviser Oversight</h3><p>Fund-level, adviser-level, and service-provider views.</p><span class="card__line" aria-hidden="true"></span></a>
+    <a class="card reveal" href="#contact"><span class="card__n">04</span><h3 class="h4">Document Intelligence</h3><p>Search, summarize, compare versions, annotate, and trace sources.</p><span class="card__line" aria-hidden="true"></span></a>
+    <a class="card reveal" style="--d:.06s" href="#contact"><span class="card__n">05</span><h3 class="h4">Exception &amp; Action Management</h3><p>Identify changes, assign owners, escalate issues, and evidence resolution.</p><span class="card__line" aria-hidden="true"></span></a>
+    <a class="card reveal" style="--d:.12s" href="#contact"><span class="card__n">06</span><h3 class="h4">Governance Insights &amp; Reporting</h3><p>Role-based dashboards, recurring reports, and board-ready briefings.</p><span class="card__line" aria-hidden="true"></span></a>
+  </div></div>
+</section>
+
+<!-- ───────────── ORCHESTRATION FLOW ───────────── -->
+<section class="flow" aria-labelledby="fl-h" data-flow>
+  <div class="wrap">
+    <p class="eyebrow reveal">Trust orchestration flow</p>
+    <h2 id="fl-h" class="h2 reveal measure">Every source, one governed path to insight and action</h2>
+  </div>
+  <div class="wrap flow__grid">
+    <div class="flow__rail" aria-hidden="true"><span data-rail></span></div>
+    <div class="flow__col reveal"><span class="flow__step">1</span><h3 class="h4">Ingest &amp; connect</h3><ul><li>Board &amp; committee content</li><li>Custody &amp; fund data</li><li>Legal / compliance inputs</li></ul></div>
+    <div class="flow__col reveal" style="--d:.1s"><span class="flow__step">2</span><h3 class="h4">AI intelligence layer</h3><ul><li>Document reading &amp; extraction</li><li>AI skills &amp; controls</li><li>Exception detection &amp; alerts</li></ul></div>
+    <div class="flow__col reveal" style="--d:.2s"><span class="flow__step">3</span><h3 class="h4">Workflow &amp; governance</h3><ul><li>Tasks, calendar &amp; reminders</li><li>Review, approval &amp; escalation</li><li>Audit trail &amp; evidence</li></ul></div>
+    <div class="flow__col reveal" style="--d:.3s"><span class="flow__step">4</span><h3 class="h4">Consolidated insights &amp; action</h3><ul><li>Board oversight</li><li>Advisor efficiency</li><li>Compliance assurance</li></ul></div>
+  </div>
+  <p class="wrap flow__partners reveal">Connected partners: Board &amp; committee · Advisors / sub-advisors · US bank / custody · Legal · Compliance · Accounting &amp; audit</p>
+</section>
+
+<!-- ───────────── AI CAPABILITY MAP ───────────── -->
+<section class="ai" id="ai" aria-labelledby="ai-h">
+  <div class="wrap">
+    <p class="eyebrow reveal">AI capability map</p>
+    <h2 id="ai-h" class="h2 reveal measure">AI skills built around the documents, decisions, committees, and evidence unique to fund boards</h2>
+    <div class="tabs" data-tabs>
+      <div class="tabs__list" role="tablist" aria-label="Capability layers">
+        <button role="tab" id="t-1" aria-controls="p-1" aria-selected="true" tabindex="0"><span>Foundation layer</span><small>All documents, governance controls, and board-wide AI</small></button>
+        <button role="tab" id="t-2" aria-controls="p-2" aria-selected="false" tabindex="-1"><span>Committee layer</span><small>Specialized vertical skills by committee</small></button>
+        <button role="tab" id="t-3" aria-controls="p-3" aria-selected="false" tabindex="-1"><span>Outcome layer</span><small>What trustees and management receive</small></button>
+      </div>
+      <div class="tabs__panels">
+        <div role="tabpanel" id="p-1" aria-labelledby="t-1" class="panel is-active">
+          <dl class="skills">
+            <div><dt>Secure Document Intake</dt><dd>Ingest, classify, index, and retain source materials</dd></div>
+            <div><dt>Reading &amp; Briefing Assistant</dt><dd>Summaries, Q&amp;A, annotations, and meeting briefs</dd></div>
+            <div><dt>Change &amp; Delta Detection</dt><dd>Compare periods, versions, responses, and exceptions</dd></div>
+            <div><dt>Evidence &amp; Audit Trail</dt><dd>Source-linked outputs, approvals, actions, and records</dd></div>
+            <div><dt>Governance Copilot</dt><dd>Role-aware assistance for trustees, officers, and advisers</dd></div>
+          </dl>
+        </div>
+        <div role="tabpanel" id="p-2" aria-labelledby="t-2" class="panel" hidden>
+          <dl class="skills">
+            <div><dt>Board of Trustees</dt><dd>Board-book briefing · Fund/adviser scan · Annual compliance review</dd></div>
+            <div><dt>Contract Committee</dt><dd>15(c) response review · FUSE analysis · Expense and peer comparison</dd></div>
+            <div><dt>Regulatory Oversight</dt><dd>CCO report review · Liquidity and derivatives monitoring · Code-of-ethics, security scans</dd></div>
+            <div><dt>Audit Committee</dt><dd>Semiannual report · Auditor presentation · Financial-statement issue detection</dd></div>
+            <div><dt>Nominating &amp; Governance</dt><dd>Meeting summary · Section callouts · Board effectiveness and governance tracking</dd></div>
+          </dl>
+        </div>
+        <div role="tabpanel" id="p-3" aria-labelledby="t-3" class="panel" hidden>
+          <ul class="outlist"><li>Faster pre-read</li><li>Clearer exceptions</li><li>Better questions</li><li>Defensible oversight</li></ul>
+        </div>
+      </div>
+    </div>
+    <p class="note reveal">Not generic AI chat—purpose-built intelligence for 1940 Act fund-board oversight.</p>
+  </div>
+</section>
+
+<!-- ───────────── MEETINGS (dark) ───────────── -->
+<section class="meet" aria-labelledby="me-h">
+  <div class="meet__media" aria-hidden="true"><img src="assets/img/boardroom.jpg" alt="" loading="lazy" width="1600" height="1065" data-parallax></div>
+  <div class="wrap meet__inner">
+    <p class="eyebrow eyebrow--light reveal">Meetings</p>
+    <h2 id="me-h" class="h2 reveal">Typical collaboration of the board—each in its own workspace</h2>
+    <ul class="chips" data-chips>
+      <li>Board meeting</li><li>Board meeting (special)</li><li>Executive committee</li><li>Compensation committee</li><li>Contract committee</li><li>Nominating governance committee</li><li>Regulatory oversight committee</li><li>Risk &amp; compliance committee</li><li>Valuation committee</li><li>Audit committee</li><li>CCO / CFO / COO report</li><li>Legal regulatory report</li>
+    </ul>
+    <p class="meet__note reveal">Fiduciary duties and ultimate decision-making authority remain with the human directors.</p>
+  </div>
+</section>
+
+<!-- ───────────── TRUST BY DESIGN ───────────── -->
+<section class="secure" aria-labelledby="se-h">
+  <div class="wrap secure__grid">
+    <div class="secure__left">
+      <svg class="secure__ic float" aria-hidden="true"><use width="100%" height="100%" href="#ic-evidence"/></svg>
+      <h2 id="se-h" class="h2 reveal">Trust<br>by design</h2>
+    </div>
+    <div class="secure__list">
+      <div class="reveal"><h3 class="h4">Secure workspace</h3><p>Board materials, fund data, and committee workflows in one secure operating environment.</p></div>
+      <div class="reveal"><h3 class="h4">Role-based access &amp; audit trail</h3><p>Included in every paid plan, alongside the core governance platform.</p></div>
+      <div class="reveal"><h3 class="h4">Source traceability</h3><p>Source-linked outputs, approvals, actions, and records—traceable end-to-end.</p></div>
+      <div class="reveal"><h3 class="h4">Human judgment stays in charge</h3><p>AI assists with review and preparation. Trustees retain independent judgment and final decision authority.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── PRICING ───────────── -->
+<section class="pricing" id="pricing" aria-labelledby="pr-h">
+  <div class="wrap">
+    <p class="eyebrow reveal">Pricing &amp; scale</p>
+    <h2 id="pr-h" class="h2 reveal measure">One governance platform—scaled by funds, users, AI usage, and enterprise service requirements</h2>
+  </div>
+  <div class="wrap tiers">
+    <article class="tier reveal"><h3 class="tier__n">Explorer</h3><p class="tier__p">Free</p><p class="tier__s">30-day guided evaluation</p><ul><li>One fund</li><li>30-day trial</li><li>Full platform access</li><li>All AI skills</li></ul><p class="tier__f">Experience governance intelligence in action.</p></article>
+    <article class="tier reveal" style="--d:.05s"><h3 class="tier__n">Board Essential</h3><p class="tier__p">$25,000<small>/year</small></p><p class="tier__s">For single-board trusts beginning their digital governance journey</p><ul><li>Up to 10 funds</li><li>Full platform access</li><li>All AI skills</li><li>Implementation $5,000</li></ul><p class="tier__f">Digitize and organize core board governance.</p></article>
+    <article class="tier tier--feat reveal" style="--d:.1s"><h3 class="tier__n">Trust Governance</h3><p class="tier__p">$60,000<small>/year</small></p><p class="tier__s">For boards that need continuous oversight, evidence, and workflow intelligence</p><ul><li>Up to 30 funds</li><li>Full platform access</li><li>AI skills tuned</li><li>Implementation $5,000</li></ul><p class="tier__f">Turn board activity into continuous oversight.</p></article>
+    <article class="tier reveal" style="--d:.15s"><h3 class="tier__n">Multi Series</h3><p class="tier__p">$100,000<small>/year</small></p><p class="tier__s">For complex trusts requiring portfolio-wide intelligence and scalable governance controls</p><ul><li>Up to 100 funds</li><li>Full platform access</li><li>AI skills tuned</li><li>Implementation $10,000</li></ul><p class="tier__f">Scale governance intelligence across the portfolio.</p></article>
+    <article class="tier reveal" style="--d:.2s"><h3 class="tier__n">Enterprise</h3><p class="tier__p">Custom</p><p class="tier__s">For administrators, large fund complexes, and multi-board governance platforms</p><ul><li>100+ funds / multi-trust</li><li>Full platform access</li><li>Custom AI skills</li><li>Implementation $10,000</li></ul><p class="tier__f">Deploy governance intelligence across the enterprise.</p></article>
+  </div>
+  <p class="wrap note reveal">All paid plans include the FundTrustIQ core governance platform, secure workspace, audit trail, and role-based access.</p>
+</section>
+
+<!-- ───────────── ENGAGEMENT ───────────── -->
+<section class="engage" id="engagement" aria-labelledby="en-h">
+  <div class="wrap">
+    <p class="eyebrow reveal">Engagement model</p>
+    <h2 id="en-h" class="h2 reveal measure">From discovery to live governance in three steps</h2>
+    <ol class="steps">
+      <li class="step reveal"><span class="step__n">01</span><h3 class="h3">Discover</h3><p class="step__s">Governance workflow and AI-skill assessment</p><ul><li>Review board materials and workflows</li><li>Identify priority committee use case</li><li>Map data sources, users, controls, and integration needs</li></ul></li>
+      <li class="step reveal" style="--d:.1s"><span class="step__n">02</span><h3 class="h3">Configure &amp; validate</h3><p class="step__s">Configure a pilot with validated use cases</p><ul><li>Configure workspaces, roles, and document taxonomy</li><li>Apply relevant AI skills and governance controls</li><li>Validate outputs with board support, compliance, and advisers</li></ul></li>
+      <li class="step reveal" style="--d:.2s"><span class="step__n">03</span><h3 class="h3">Launch &amp; scale</h3><p class="step__s">Production deployment and expansion roadmap</p><ul><li>Launch live board and committee workflows</li><li>Onboard trustees, officers, and service providers</li><li>Measure adoption, preparation time, exceptions, and follow-through</li></ul></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ───────────── CTA ───────────── -->
+<section class="final" id="contact" aria-labelledby="cta-h">
+  <div class="final__art" aria-hidden="true" data-final-art></div>
+  <div class="wrap final__inner">
+    <h2 id="cta-h" class="h1 reveal">Spend less time preparing.<br>More time on informed oversight.</h2>
+    <div class="final__links reveal" style="--d:.15s">
+      <a class="cta" href="mailto:hello@fundtrustiq.com?subject=FundTrustIQ%20demo">Start a 30-day guided evaluation <span class="cta__arr" aria-hidden="true">↳</span></a>
+      <a class="cta cta--sm" href="tel:+14159350474">+1 415-935-0474</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__grid">
+    <div>
+      <a class="brand" href="#top" aria-label="FundTrust IQ home"><img src="assets/img/logo-mark.svg" alt="" width="30" height="26"><span class="brand__word">FundTrust<span> IQ</span></span></a>
+      <p class="foot__tag">Where trust meets innovation</p>
+    </div>
+    <nav aria-label="Footer"><a class="link-u" href="#solution">Platform</a><a class="link-u" href="#ai">AI skills</a><a class="link-u" href="#pricing">Pricing</a><a class="link-u" href="#engagement">Engagement</a></nav>
+    <address><a class="link-u" href="mailto:hello@fundtrustiq.com">hello@fundtrustiq.com</a><a class="link-u" href="tel:+14159350474">+1 415-935-0474</a><a class="link-u" href="https://www.fundtrustiq.com">www.fundtrustiq.com</a></address>
+  </div>
+  <div class="wrap foot__base"><span>© <span data-year>2026</span> FundTrustIQ</span><span>Patent pending</span></div>
+</footer>
+
+<script src="js/main.js" defer></script>
+</body>
+</html>
