@@ -1,4 +1,4 @@
-/* FundTrustIQ — interaction layer (vanilla, no dependencies) */
+/* FundTrustIQ — interaction layer. Lenis (js/vendor/lenis.min.js) is the only dependency. */
 (() => {
   const d = document, root = d.documentElement;
   const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -33,9 +33,15 @@
     const y = scrollY;
     nav.classList.toggle('is-scrolled', y > 20);
     const menuOpen = nav.querySelector('.menu.is-open') || !$('[data-mobile-menu]').hidden;
-    nav.classList.toggle('is-hidden', y > 480 && y > lastY + 2 && !menuOpen);
-    if (y < lastY - 2) nav.classList.remove('is-hidden');
-    lastY = y;
+    // Accumulate sub-pixel inertia frames, then apply the same 2px threshold.
+    const dy = y - lastY;
+    if (dy > 2) {
+      if (y > 480 && !menuOpen) nav.classList.add('is-hidden');
+      lastY = y;
+    } else if (dy < -2) {
+      nav.classList.remove('is-hidden');
+      lastY = y;
+    }
   };
 
   /* ── Platform dropdown ── */
@@ -199,8 +205,83 @@
     });
   });
 
-  /* ── Single rAF-throttled scroll loop ── */
+  /* ── Scroll sync. Lenis emits on the same frame it moves the window. ── */
+  const syncScroll = () => { onNav(); onStory(); onRows(); onFlow(); };
   let ticking = false;
-  const onScroll = () => { if (ticking) return; ticking = true; requestAnimationFrame(() => { onNav(); onStory(); onRows(); onFlow(); ticking = false; }); };
-  addEventListener('scroll', onScroll, { passive: true }); addEventListener('resize', onScroll); onScroll();
+  const onNativeScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { syncScroll(); ticking = false; });
+  };
+  let nativeScrollBound = false;
+  const bindNative = () => {
+    if (nativeScrollBound) return;
+    addEventListener('scroll', onNativeScroll, { passive: true });
+    nativeScrollBound = true;
+  };
+  const unbindNative = () => {
+    if (!nativeScrollBound) return;
+    removeEventListener('scroll', onNativeScroll);
+    nativeScrollBound = false;
+  };
+
+  /* ── Inertia smooth scroll. Off for reduced motion and touch (native scroll). ── */
+  const motion = matchMedia('(prefers-reduced-motion: reduce)');
+  const finePointer = matchMedia('(pointer: fine)');
+  let lenis = null;
+
+  const scrollToHash = (hash, immediate) => {
+    const id = decodeURIComponent(hash);
+    if (id === '#' || (id === '#top' && !$('#top'))) { lenis.scrollTo(0, { immediate }); return; }
+    const target = id.startsWith('#') ? d.getElementById(id.slice(1)) : null;
+    if (!target) return;
+    // Lenis subtracts html scroll-padding-top, which clears the sticky nav.
+    lenis.scrollTo(target, { immediate });
+  };
+  const onAnchorClick = event => {
+    if (!lenis || event.defaultPrevented || event.button !== 0) return;
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
+    if (!link) return;
+    let url;
+    try { url = new URL(link.href, location.href); } catch { return; }
+    if (url.origin !== location.origin || url.pathname !== location.pathname || url.hash.length < 2) return;
+    const id = decodeURIComponent(url.hash);
+    if (id !== '#top' && !d.getElementById(id.slice(1))) return;
+    event.preventDefault();
+    if (location.hash !== url.hash) history.pushState(null, '', url.hash);
+    scrollToHash(url.hash, false);
+  };
+  const onPopState = () => { if (lenis) scrollToHash(location.hash || '#', false); };
+
+  const startLenis = () => {
+    if (lenis || typeof Lenis !== 'function' || motion.matches || !finePointer.matches) return;
+    lenis = new Lenis({
+      autoRaf: true,
+      lerp: 0.08,          /* inertia glide, in the range of a Greenlock-style wheel */
+      smoothWheel: true,
+      syncTouch: false,
+      allowNestedScroll: true,
+      stopInertiaOnNavigate: true
+    });
+    lenis.on('scroll', syncScroll);
+    d.addEventListener('click', onAnchorClick, true);
+    addEventListener('popstate', onPopState);
+    unbindNative();
+  };
+  const stopLenis = () => {
+    if (!lenis) return;
+    lenis.destroy();
+    lenis = null;
+    d.removeEventListener('click', onAnchorClick, true);
+    removeEventListener('popstate', onPopState);
+    bindNative();
+    syncScroll();
+  };
+
+  if (!motion.matches && finePointer.matches) startLenis();
+  else bindNative();
+  motion.addEventListener('change', () => { if (motion.matches) stopLenis(); else startLenis(); });
+  addEventListener('resize', onNativeScroll);
+  syncScroll();
 })();
