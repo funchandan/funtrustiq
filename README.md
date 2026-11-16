@@ -2,6 +2,8 @@
 
 **Live demo:** https://funchandan.github.io/funtrustiq/
 
+**Website v2 (spec):** see [`docs/v2/SPEC.md`](docs/v2/SPEC.md) — craft bar from the Sharplink Loom walkthrough, remapped to FundTrustIQ brand.
+
 Static site: plain HTML/CSS/JS with no build step. Fonts are self-hosted. Smooth scrolling is a vendored copy of Lenis (no build step, no CDN).
 
 ```
