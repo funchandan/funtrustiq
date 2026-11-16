@@ -1,0 +1,92 @@
+@font-face {
+  font-family: "FT Display";
+  src: url("../assets/fonts/fraunces-latin-opsz-normal.woff2") format("woff2");
+  font-weight: 300 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "FT Sans";
+  src: url("../assets/fonts/manrope-latin-wght-normal.woff2") format("woff2");
+  font-weight: 200 800;
+  font-display: swap;
+}
+
+:root {
+  --brand-navy: #1f396d;
+  --brand-ink: #012f71;
+  --brand-blue: #00609e;
+  --brand-sky: #58bceb;
+
+  --navy-100: #e6edf7;
+  --navy-200: #b9c8e0;
+  --navy-300: #6f88b3;
+  --navy-400: #1f396d;
+  --navy-500: #122852;
+  --navy-600: #0b1f3f;
+  --navy-700: #071530;
+
+  --sky-100: #eaf7fd;
+  --sky-200: #c4e8f8;
+  --sky-300: #8fd1f1;
+  --sky-400: #58bceb;
+  --sky-500: #00609e;
+  --sky-600: #0a3a5e;
+
+  --mist-100: #f3f6f6;
+  --mist-200: #ecf7f7;
+  --mist-300: #cfe0dc;
+  --gray-200: #d3d9df;
+  --gray-300: #9aa7b4;
+  --gray-400: #5d6b7a;
+  --white: #ffffff;
+
+  --bg: var(--mist-100);
+  --surface: var(--white);
+  --ink: var(--navy-600);
+  --ink-soft: var(--gray-400);
+  --ink-muted: var(--gray-200);
+  --line: rgba(11, 31, 63, 0.12);
+  --accent: var(--sky-400);
+  --focus: #0079c7;
+
+  --font-display: "FT Display", Georgia, "Times New Roman", serif;
+  --font-sans: "FT Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fs-display: clamp(2.75rem, 1.6rem + 4.6vw, 5.25rem);
+  --fs-h1: clamp(2.25rem, 1.5rem + 3vw, 4.625rem);
+  --fs-h2: clamp(1.875rem, 1.4rem + 1.8vw, 3rem);
+  --fs-h3: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+  --fs-h4: 1.375rem;
+  --fs-lead: clamp(1.25rem, 1.05rem + 0.7vw, 1.75rem);
+  --fs-body: 1.125rem;
+  --fs-small: 0.9375rem;
+  --fs-micro: 0.75rem;
+  --lh-tight: 1.08;
+  --lh-snug: 1.25;
+  --lh-body: 1.55;
+  --tracking-display: -0.02em;
+  --tracking-caps: 0.14em;
+
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+  --sp-8: 4rem;
+  --sp-9: 6rem;
+  --sp-10: 8rem;
+  --gutter: clamp(1.25rem, 0.6rem + 2.6vw, 2.5rem);
+  --section-y: clamp(5rem, 3rem + 7vw, 10rem);
+  --maxw: 90rem;
+
+  --r-2: 0.5rem;
+  --r-3: 1rem;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-1: 180ms;
+  --dur-2: 350ms;
+  --dur-3: 700ms;
+  --dur-4: 1100ms;
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--focus) 45%, transparent);
+}
