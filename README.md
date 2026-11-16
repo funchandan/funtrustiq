@@ -1,41 +1,33 @@
-# FundTrustIQ — marketing site v1
+# FundTrustIQ — marketing site v2
 
-**Live demo:** https://funchandan.github.io/funtrustiq/
+**Live:** https://funchandan.github.io/funtrustiq/
 
-**Website v2 (spec):** see [`docs/v2/SPEC.md`](docs/v2/SPEC.md) — craft bar from the Sharplink Loom walkthrough, remapped to FundTrustIQ brand.
-
-Static site: plain HTML/CSS/JS with no build step. Fonts are self-hosted. Smooth scrolling is a vendored copy of Lenis (no build step, no CDN).
+Vite + TypeScript marketing site with Lenis smooth scroll, GSAP ScrollTrigger, and Three.js governance visuals. Craft bar: seamless 3D scroll (see `docs/v2/SPEC.md`). Brand tokens follow `BRAND.md`.
 
 ```
-index.html          single page (all sections)
-css/tokens.css      design tokens (colour, type, spacing, radii, motion)
-css/site.css        components + layout
-js/main.js          interactions (nav, fan hero, reveals, story, slider, tabs, smooth scroll)
-js/vendor/lenis.min.js  Lenis 1.3.27 (MIT) inertia scroll
-css/lenis.css       Lenis rules so it does not fight native sticky or CSS smooth scroll
-assets/img          logo-mark.svg (vector redraw of the deck logo), favicon, boardroom.jpg (from deck p.8)
-assets/fonts        Fraunces (display), Manrope (text), both OFL
-BRAND.md            brand + component guidelines
+index.html          page shell (all sections)
+src/main.ts         boot
+src/motion.ts       Lenis, reveals, magnetic CTAs, story scrub
+src/three/          hero crystal + pinned board morph
+src/styles/         tokens + layout
+public/assets/      logo, favicon, boardroom, fonts (also bundled from src/assets/fonts)
+docs/v2/            website v2 product/design spec
 ```
 
 ## Run locally
 
-From the repository root:
-
-```
-python3 -m http.server 8787     # → http://localhost:8787
-```
-
-GitHub Pages serves this site from the `/funtrustiq/` subpath. To preview that same layout, serve a parent directory that contains this checkout as `funtrustiq/`:
-
-```
-python3 -m http.server 8787     # → http://localhost:8787/funtrustiq/
+```bash
+npm install
+npm run dev          # → http://localhost:8787/
 ```
 
-Stylesheets, scripts, fonts, images, the favicon, and in-page links use relative URLs, so they resolve under that prefix. To deploy anywhere else, upload the repository root as-is to any static host.
-
-Wheel scrolling uses a light inertia curve (vendored Lenis). In-page links ease to the target and keep the sticky nav clear via `scroll-padding-top`. The smooth scroll is not started when `prefers-reduced-motion` is set, or when the primary pointer is coarse; those visits keep native scrolling.
+```bash
+npm run build        # → dist/ (base /funtrustiq/ for GitHub Pages)
+npm run preview      # preview production build
+```
 
 ## Deploy
 
-Pushes to `main` publish the repository root with GitHub Actions (`.github/workflows/pages.yml`). The workflow sets `enablement: true` so Actions tries to turn GitHub Pages on. The default `GITHUB_TOKEN` cannot enable Pages on a repository that has never had it, so after the first merge open **Settings → Pages** and set **Source** to **GitHub Actions** if the deploy workflow reports that Pages is not enabled, then re-run the workflow.
+Pushes to `main` run `.github/workflows/pages.yml`: `npm ci` → `npm run build` → publish `dist/`.
+
+After the first enablement, if Pages is not on yet: **Settings → Pages → Source: GitHub Actions**.
