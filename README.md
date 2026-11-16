@@ -4,6 +4,8 @@
 
 **Website v2 (spec):** see [`docs/v2/SPEC.md`](docs/v2/SPEC.md) — craft bar from the Sharplink Loom walkthrough, remapped to FundTrustIQ brand.
 
+**Website v2 (implementation, held):** branch [`cursor/website-v2-frontend-9932`](https://github.com/funchandan/funtrustiq/tree/cursor/website-v2-frontend-9932) — Vite + Three.js frontend from #4, kept for a later deploy. `main` serves v1 until then.
+
 Static site: plain HTML/CSS/JS with no build step. Fonts are self-hosted. Smooth scrolling is a vendored copy of Lenis (no build step, no CDN).
 
 ```
