@@ -20,6 +20,15 @@ assets/fonts        Fraunces (display), Manrope (text), both OFL
 BRAND.md            brand + component guidelines
 ```
 
+## Hero headline time-savings figure
+
+The hero omits the percentage until an approved figure is supplied. The only toggle is the `data-less-time` attribute on `#hero-h` in `index.html`. `js/main.js` reads it before the word-split reveal.
+
+- `data-less-time=""` — “Confident board decisions to tracked actions, with 1940 Act compliance governed end to end.”
+- `data-less-time="40"` — “Confident board decisions to tracked actions in up to 40% less time, with 1940 Act compliance governed end to end.”
+
+Any finite number greater than zero is rounded and inserted the same way. An empty value, zero, or anything that is not a number leaves the headline unchanged.
+
 ## Run locally
 
 From the repository root:

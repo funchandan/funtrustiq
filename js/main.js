@@ -6,16 +6,35 @@
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const yr = $('[data-year]'); if (yr) yr.textContent = new Date().getFullYear();
 
-  /* ── Split headline into masked words ── */
+  /* Hero time-savings toggle: #hero-h[data-less-time].
+     Empty attribute leaves the clause out. "40" renders "in up to 40% less time".
+     Only a finite number greater than zero is inserted. See README. */
+  const heroH = $('#hero-h');
+  if (heroH) {
+    const raw = heroH.getAttribute('data-less-time');
+    const n = raw == null || String(raw).trim() === '' ? NaN : Number(raw);
+    if (Number.isFinite(n) && n > 0) {
+      const next = heroH.innerHTML.replace('tracked actions,', `tracked actions in up to ${Math.round(n)}% less time,`);
+      if (next !== heroH.innerHTML) { heroH.innerHTML = next; heroH.classList.add('has-metric'); }
+    }
+  }
+
+  /* ── Split headline into masked words. NBSP stays inside a word so "1940 Act" won't break. ── */
   $$('[data-split]').forEach(el => {
     let i = 0;
     el.innerHTML = el.innerHTML.split(/(<br\s*\/?>)/).map(part =>
-      /^<br/.test(part) ? part : part.trim().split(/\s+/).map(w => `<span class="w"><span style="--i:${i++}">${w}</span></span>`).join(' ')
+      /^<br/.test(part) ? part : part.trim().split(/[ \t\n\r]+/).filter(Boolean).map(w => `<span class="w"><span style="--i:${i++}">${w}</span></span>`).join(' ')
     ).join('');
   });
-  const ready = () => requestAnimationFrame(() => root.classList.add('is-ready'));
-  (d.fonts && d.fonts.ready ? d.fonts.ready : Promise.resolve()).then(ready);
-  setTimeout(ready, 1200);
+  const markReady = () => { if (!root.classList.contains('is-ready')) requestAnimationFrame(() => root.classList.add('is-ready')); };
+  const fontLoads = (d.fonts && d.fonts.load)
+    ? Promise.all([
+        d.fonts.load('400 64px "FT Display"'),
+        d.fonts.load('500 18px "FT Sans"')
+      ]).catch(() => {})
+    : Promise.resolve();
+  /* Wait for the preloaded faces so the reveal doesn't swap mid-animation, but don't hang. */
+  Promise.race([fontLoads, new Promise(r => setTimeout(r, 1800))]).then(markReady);
 
   /* ── Scroll reveals ── */
   const io = new IntersectionObserver(es => es.forEach(e => {
@@ -70,39 +89,115 @@
     $$('li', t).forEach(li => { const c = li.cloneNode(true); c.setAttribute('aria-hidden', 'true'); t.appendChild(c); });
   });
 
-  /* ── Hero "blades": triangle fan echoing the logo, depth via blur ── */
+  /* ── Hero "blades": triangle fan. Blur is baked once into a bitmap.
+     Each frame writes transform only. The loop pauses while scrolling,
+     offscreen, or in a hidden tab. Pointer parallax is one shared sample. ── */
+  const fanLoops = [];
+  let scrollHold = false, scrollHoldTimer = 0, lastScrollY = scrollY, pageVisible = !document.hidden;
+  let pointerX = 0, pointerY = 0, pointerBound = false;
+  const bindPointer = () => {
+    if (pointerBound || RM) return;
+    pointerBound = true;
+    addEventListener('pointermove', e => {
+      if (scrollHold || !pageVisible) return;
+      pointerX = clamp((e.clientX / innerWidth - .5) * 2, -1, 1);
+      pointerY = clamp((e.clientY / innerHeight - .5) * 2, -1, 1);
+    }, { passive: true });
+  };
+  const noteScrollHold = () => {
+    const y = scrollY;
+    if (y === lastScrollY) return;
+    lastScrollY = y;
+    if (!scrollHold) { scrollHold = true; fanLoops.forEach(f => f.hold()); }
+    clearTimeout(scrollHoldTimer);
+    scrollHoldTimer = setTimeout(() => { scrollHold = false; fanLoops.forEach(f => f.release()); }, 180);
+  };
+  document.addEventListener('visibilitychange', () => {
+    pageVisible = !document.hidden;
+    fanLoops.forEach(f => f.sync());
+  });
+
   function Fan(host, opts) {
-    // Each blade is a circular sector (conic wedge) pivoting on one point — the
-    // Greenlock "fan" construction, rebuilt with FundTrustIQ's triangle palette.
     const blades = opts.blades.map((b, i) => {
-      const el = d.createElement('div'); el.className = 'blade';
-      el.style.setProperty('--c', b.c); el.style.setProperty('--b', b.blur + 'px'); el.style.setProperty('--th', b.th + 'deg');
-      el.style.zIndex = b.z ?? i; host.appendChild(el);
-      return { el, ...b, phase: i * 1.37 };
+      const baked = b.blur > 0.5;
+      const el = d.createElement(baked ? 'canvas' : 'div');
+      el.className = baked ? 'blade blade--baked' : 'blade';
+      if (!baked) { el.style.setProperty('--c', b.c); el.style.setProperty('--th', b.th + 'deg'); }
+      el.style.zIndex = String(b.z ?? i);
+      host.appendChild(el);
+      return { el, baked, ...b, phase: i * 1.37, R: 0, px: 0, py: 0, size: 0 };
     });
-    let mx = 0, my = 0, tx = 0, ty = 0, t0 = performance.now(), vis = true, raf;
-    const layout = () => {
-      const w = host.clientWidth, h = host.clientHeight, s = opts.scale ? opts.scale(w, h) : Math.max(w, h * 1.4);
-      const px = w * opts.px(w), py = h * opts.py(w);
-      blades.forEach(b => { b.R = s * b.r; b.el.style.setProperty('--d', 2 * b.R + 'px'); b.x = px - b.R; b.y = py - b.R; });
+    let elapsed = 0, lastNow = 0, lx = 0, ly = 0, vis = false, raf = 0, running = false, resizeT = 0;
+
+    const bake = b => {
+      const blur = b.blur, diameter = Math.max(2, 2 * b.R), pad = Math.ceil(blur * 3 + 2), size = diameter + pad * 2;
+      const maxEdge = blur >= 12 ? 520 : 860;
+      const drawScale = Math.min(1, maxEdge / size);
+      const canvas = b.el, bw = Math.max(1, Math.round(size * drawScale));
+      if (canvas.width !== bw) { canvas.width = bw; canvas.height = bw; }
+      canvas.style.width = size + 'px'; canvas.style.height = size + 'px';
+      const ctx = canvas.getContext('2d', { alpha: true });
+      ctx.setTransform(drawScale, 0, 0, drawScale, 0, 0);
+      ctx.clearRect(0, 0, size, size);
+      ctx.save();
+      ctx.filter = `blur(${blur}px)`;
+      ctx.translate(size / 2, size / 2);
+      ctx.beginPath();
+      const a0 = -Math.PI / 2 + 0.004, a1 = a0 + Math.max(0.01, b.th * Math.PI / 180) - 0.008;
+      ctx.moveTo(0, 0); ctx.arc(0, 0, diameter / 2, a0, a1); ctx.closePath();
+      ctx.fillStyle = b.c; ctx.fill();
+      ctx.restore();
+      b.size = size;
     };
-    const frame = now => {
-      const t = (now - t0) / 1000;
-      tx += (mx - tx) * .05; ty += (my - ty) * .05;
-      const intro = RM ? 1 : 1 - Math.pow(1 - clamp(t / 2.6, 0, 1), 4);
+    const apply = () => {
+      const intro = RM ? 1 : 1 - Math.pow(1 - clamp(elapsed / 2.6, 0, 1), 4);
       blades.forEach(b => {
-        const sway = RM ? 0 : Math.sin(t * b.sp + b.phase) * b.amp;
-        const a = opts.start + (b.a - opts.start) * intro + sway + tx * b.par;
-        b.el.style.transform = `translate3d(${b.x + tx * b.par * 5}px,${b.y + ty * b.par * 5}px,0) rotate(${a}deg)`;
+        const sway = RM ? 0 : Math.sin(elapsed * b.sp + b.phase) * b.amp;
+        const a = opts.start + (b.a - opts.start) * intro + sway + lx * b.par;
+        const half = b.baked ? (b.size || 2 * b.R) / 2 : b.R;
+        const x = b.px - half + lx * b.par * 5, y = b.py - half + ly * b.par * 5;
+        b.el.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) rotate(${a.toFixed(2)}deg)`;
       });
-      if (!RM && vis) raf = requestAnimationFrame(frame);
     };
-    layout(); addEventListener('resize', layout);
-    if (!RM) {
-      addEventListener('pointermove', e => { mx = (e.clientX / innerWidth - .5) * 2; my = (e.clientY / innerHeight - .5) * 2; }, { passive: true });
-      new IntersectionObserver(([e]) => { vis = e.isIntersecting; if (vis) { cancelAnimationFrame(raf); raf = requestAnimationFrame(frame); } }).observe(host);
-    }
-    requestAnimationFrame(frame);
+    const layout = () => {
+      const w = host.clientWidth, h = host.clientHeight;
+      if (w < 2 || h < 2) return;
+      const s = opts.scale ? opts.scale(w, h) : Math.max(w, h * 1.4);
+      const px = w * opts.px(w), py = h * opts.py(w);
+      blades.forEach(b => {
+        const R = s * b.r, changed = Math.abs(R - b.R) > 1.5;
+        b.R = R; b.px = px; b.py = py;
+        if (!b.baked) b.el.style.setProperty('--d', (2 * R) + 'px');
+        else if (changed || !b.el.width) bake(b);
+      });
+      apply();
+    };
+    const shouldRun = () => !RM && vis && pageVisible && !scrollHold;
+    const schedule = () => { if (running || !shouldRun()) return; running = true; raf = requestAnimationFrame(frame); };
+    const frame = now => {
+      running = false;
+      if (!shouldRun()) return;
+      if (!lastNow) { lastNow = now; schedule(); return; }
+      const dt = Math.min(.05, (now - lastNow) / 1000);
+      lastNow = now; elapsed += dt;
+      lx += (pointerX - lx) * .05; ly += (pointerY - ly) * .05;
+      if (Math.abs(pointerX - lx) < .001) lx = pointerX;
+      if (Math.abs(pointerY - ly) < .001) ly = pointerY;
+      apply(); schedule();
+    };
+    const api = {
+      hold() { cancelAnimationFrame(raf); running = false; },
+      release() { lastNow = 0; schedule(); },
+      sync() { if (shouldRun()) { lastNow = 0; schedule(); } else { cancelAnimationFrame(raf); running = false; } }
+    };
+    fanLoops.push(api);
+    addEventListener('resize', () => { clearTimeout(resizeT); resizeT = setTimeout(layout, 120); }, { passive: true });
+    if (RM) { vis = true; layout(); return; }
+    bindPointer();
+    new IntersectionObserver(([e]) => { vis = e.isIntersecting; if (vis) layout(); api.sync(); }).observe(host);
+    const r = host.getBoundingClientRect();
+    if (r.bottom > 0 && r.top < innerHeight) { vis = true; layout(); }
+    api.sync();
   }
   const SKY = '#c4e8f8', SKY2 = '#9fd6f2', NAVY = '#14315f', NAVY2 = '#1f396d', ICE = '#f7fbfd', BLUE = '#2a7fba';
   const hero = $('[data-hero-art]');
@@ -205,8 +300,250 @@
     });
   });
 
+  /* ── Product demo: 4 steps, loading phases, autoplay only while in view ── */
+  let onTimeline = () => {};
+  const STEP_MS = 7800;
+  const demo = $('[data-demo]');
+  if (demo) {
+    const tabs = $$('[role="tab"]', demo);
+    const panels = tabs.map(t => d.getElementById(t.getAttribute('aria-controls')));
+    const autoBtn = $('[data-demo-auto]', demo);
+    const autoLabel = $('[data-demo-auto-label]', demo);
+    const os = $('[data-os]', demo);
+    let index = 0, playing = !RM, inView = false, token = 0, timers = [], autoT = 0;
+
+    const clearTimers = () => { timers.forEach(clearTimeout); timers = []; };
+    const clearAuto = () => { clearTimeout(autoT); autoT = 0; };
+    const later = (ms, fn) => { timers.push(setTimeout(fn, ms)); };
+    const syncAutoBtn = () => {
+      if (!autoBtn) return;
+      autoBtn.setAttribute('aria-pressed', playing ? 'true' : 'false');
+      if (autoLabel) autoLabel.textContent = playing ? 'Autoplay on' : 'Autoplay off';
+    };
+    const restartBars = () => {
+      tabs.forEach(tab => {
+        const bar = $('.demo__bar', tab);
+        if (!bar) return;
+        bar.style.transition = 'none';
+        bar.style.transform = 'scaleX(0)';
+      });
+      if (!playing || RM || !inView) return;
+      const bar = $('.demo__bar', tabs[index]);
+      if (!bar) return;
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        bar.style.transition = `transform ${STEP_MS}ms linear`;
+        bar.style.transform = 'scaleX(1)';
+      }));
+    };
+    const arm = () => {
+      clearAuto();
+      if (!playing || !inView || RM || d.hidden) return;
+      autoT = setTimeout(() => show((index + 1) % tabs.length, { auto: true }), STEP_MS);
+    };
+    const userPause = () => {
+      if (!playing) return;
+      playing = false;
+      syncAutoBtn();
+      clearAuto();
+      restartBars();
+    };
+    const setPhase = (panel, phase) => {
+      panel.dataset.phase = phase;
+      panel.setAttribute('aria-busy', phase === 'ready' ? 'false' : 'true');
+      const meter = $('[role="progressbar"]', panel);
+      const vals = { load: 6, '1': 35, '2': 62, '3': 84, ready: 100 };
+      if (meter) meter.setAttribute('aria-valuenow', String(vals[phase] ?? 0));
+      if (phase === '2') runStream(panel);
+      if (phase === 'ready') {
+        const el = $('[data-stream]', panel);
+        if (el && el.dataset.full) el.textContent = el.dataset.full;
+      }
+    };
+    const runStream = panel => {
+      const el = $('[data-stream]', panel);
+      if (!el) return;
+      const full = el.dataset.full || (el.dataset.full = el.textContent.replace(/\s+/g, ' ').trim());
+      if (RM) { el.textContent = full; return; }
+      const words = full.split(' ');
+      const my = token;
+      el.textContent = '';
+      let i = 0;
+      const step = () => {
+        if (my !== token || panel.dataset.phase === 'ready') { el.textContent = full; return; }
+        el.textContent = words.slice(0, ++i).join(' ');
+        if (i < words.length) later(36, step);
+      };
+      step();
+    };
+    const show = i => {
+      index = i;
+      token++;
+      clearTimers();
+      tabs.forEach((tab, n) => {
+        const on = n === i;
+        tab.setAttribute('aria-selected', on ? 'true' : 'false');
+        tab.tabIndex = on ? 0 : -1;
+        panels[n].hidden = !on;
+      });
+      const panel = panels[i];
+      const stream = $('[data-stream]', panel);
+      if (stream && !stream.dataset.full) stream.dataset.full = stream.textContent.replace(/\s+/g, ' ').trim();
+      if (RM) { setPhase(panel, 'ready'); }
+      else {
+        setPhase(panel, 'load');
+        const my = token;
+        [[280, '1'], [640, '2'], [980, '3'], [1320, 'ready']].forEach(([ms, phase]) => {
+          later(ms, () => { if (my !== token || !inView) return; setPhase(panel, phase); });
+        });
+      }
+      restartBars();
+      arm();
+    };
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => { userPause(); show(i); });
+      tab.addEventListener('keydown', e => {
+        const dir = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+        let n = null;
+        if (dir) n = (i + dir + tabs.length) % tabs.length;
+        else if (e.key === 'Home') n = 0;
+        else if (e.key === 'End') n = tabs.length - 1;
+        if (n == null) return;
+        e.preventDefault();
+        userPause();
+        show(n);
+        tabs[n].focus();
+      });
+    });
+    if (autoBtn) autoBtn.addEventListener('click', () => {
+      playing = !playing;
+      syncAutoBtn();
+      if (playing) { restartBars(); arm(); }
+      else { clearAuto(); restartBars(); }
+    });
+    if (os) {
+      os.addEventListener('pointerdown', () => userPause());
+      os.addEventListener('keydown', e => { if (e.key !== 'Tab') userPause(); });
+      os.addEventListener('click', e => {
+        const cite = e.target.closest('[data-cite]');
+        if (cite) {
+          const el = d.getElementById(cite.getAttribute('data-cite'));
+          if (!el) return;
+          el.classList.remove('is-jumped');
+          void el.offsetWidth;
+          el.classList.add('is-jumped');
+          el.focus({ preventScroll: true });
+          el.scrollIntoView({ block: 'nearest', behavior: RM ? 'auto' : 'smooth' });
+        }
+        const role = e.target.closest('[data-role]');
+        if (!role) return;
+        const scene = role.closest('.scene');
+        $$('[data-role]', scene).forEach(b => b.setAttribute('aria-pressed', b === role ? 'true' : 'false'));
+        $$('[data-role-panel]', scene).forEach(p => { p.hidden = p.getAttribute('data-role-panel') !== role.getAttribute('data-role'); });
+      });
+    }
+    syncAutoBtn();
+    if (!RM) {
+      panels[0].dataset.phase = 'load';
+      panels[0].setAttribute('aria-busy', 'true');
+    } else {
+      panels[0].dataset.phase = 'ready';
+      panels[0].setAttribute('aria-busy', 'false');
+    }
+    const setLive = on => {
+      const was = inView;
+      inView = on;
+      demo.classList.toggle('is-live', on);
+      if (!on) { clearTimers(); clearAuto(); return; }
+      if (!was) {
+        if (!RM && panels[index].dataset.phase !== 'ready') show(index);
+        else arm();
+      }
+    };
+    new IntersectionObserver(([e]) => setLive(e.isIntersecting && e.intersectionRatio >= 0.35), { threshold: [0, 0.35, 0.7] }).observe(os || demo);
+    document.addEventListener('visibilitychange', () => {
+      if (d.hidden) { clearTimers(); clearAuto(); }
+      else if (inView) {
+        if (!RM && panels[index].dataset.phase !== 'ready') show(index);
+        else arm();
+      }
+    });
+  }
+
+  /* ── Governance ECG timeline. Path is rebuilt from the dots; the draw is scroll-linked. ── */
+  const timeline = $('[data-timeline]');
+  if (timeline) {
+    const svg = $('[data-ecg-svg]', timeline);
+    const draw = $('[data-ecg]', timeline);
+    const base = $('[data-ecg-base]', timeline);
+    const beats = $$('[data-beat]', timeline);
+    const points = beats.map(b => b.closest('.tpoint'));
+    const grad = $('#ecg-grad');
+    let sig = '', lastP = -1;
+    const build = (pts, vertical, w, h) => {
+      const n = v => v.toFixed(1);
+      if (!pts.length) return '';
+      if (!vertical) {
+        let path = `M 0 ${n(pts[0].y)}`;
+        pts.forEach(p => {
+          path += ` L ${n(p.x - 42)} ${n(p.y)} L ${n(p.x - 24)} ${n(p.y + 8)} L ${n(p.x - 10)} ${n(p.y - 6)} L ${n(p.x)} ${n(p.y - 38)} L ${n(p.x + 9)} ${n(p.y + 12)} L ${n(p.x + 24)} ${n(p.y)}`;
+        });
+        return path + ` L ${n(w)} ${n(pts[pts.length - 1].y)}`;
+      }
+      let path = `M ${n(pts[0].x)} 0`;
+      pts.forEach(p => {
+        path += ` L ${n(p.x)} ${n(p.y - 32)} L ${n(p.x - 8)} ${n(p.y - 14)} L ${n(p.x + 22)} ${n(p.y)} L ${n(p.x - 9)} ${n(p.y + 11)} L ${n(p.x)} ${n(p.y + 26)}`;
+      });
+      return path + ` L ${n(pts[pts.length - 1].x)} ${n(h)}`;
+    };
+    const layoutTimeline = () => {
+      const w = timeline.clientWidth, h = timeline.clientHeight;
+      if (w < 2 || h < 2) return;
+      const vertical = matchMedia('(max-width: 991px)').matches;
+      const host = timeline.getBoundingClientRect();
+      const pts = beats.map(dot => {
+        const r = dot.getBoundingClientRect();
+        return { x: r.left + r.width / 2 - host.left, y: r.top + r.height / 2 - host.top };
+      });
+      const next = (vertical ? 'v' : 'h') + ':' + w + 'x' + h + ':' + pts.map(p => p.x.toFixed(0) + ',' + p.y.toFixed(0)).join(';');
+      if (next === sig) return;
+      sig = next;
+      svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+      if (grad) {
+        grad.setAttribute('x1', '0'); grad.setAttribute('y1', '0');
+        grad.setAttribute('x2', vertical ? '0' : String(w));
+        grad.setAttribute('y2', vertical ? String(h) : '0');
+      }
+      const dAttr = build(pts, vertical, w, h);
+      base.setAttribute('d', dAttr);
+      draw.setAttribute('d', dAttr);
+      lastP = -1;
+      if (RM) {
+        draw.style.strokeDashoffset = '0';
+        points.forEach(p => p.classList.add('is-on'));
+      }
+    };
+    onTimeline = () => {
+      if (RM || !sig) return;
+      const r = timeline.getBoundingClientRect();
+      const start = innerHeight * 0.92, end = innerHeight * 0.38;
+      const p = clamp((start - r.top) / (start - end), 0, 1);
+      if (Math.abs(p - lastP) < 0.004) return;
+      lastP = p;
+      draw.style.strokeDashoffset = String(1 - p);
+      points.forEach((el, i) => {
+        const on = p >= (i + 0.45) / points.length;
+        if (el.classList.contains('is-on') !== on) el.classList.toggle('is-on', on);
+      });
+    };
+    layoutTimeline();
+    if (window.ResizeObserver) new ResizeObserver(() => layoutTimeline()).observe(timeline);
+    else addEventListener('resize', layoutTimeline);
+    if (d.fonts && d.fonts.ready) d.fonts.ready.then(layoutTimeline);
+    if (RM) points.forEach(p => p.classList.add('is-on'));
+  }
+
   /* ── Scroll sync. Lenis emits on the same frame it moves the window. ── */
-  const syncScroll = () => { onNav(); onStory(); onRows(); onFlow(); };
+  const syncScroll = () => { noteScrollHold(); onNav(); onStory(); onRows(); onFlow(); onTimeline(); };
   let ticking = false;
   const onNativeScroll = () => {
     if (ticking) return;
