@@ -70,8 +70,8 @@ address{font-style:normal}
 .cta--sm{font-size:1.25rem;font-weight:var(--fw-semibold);color:var(--ink);text-shadow:none}
 
 /* ════════ Nav ════════ */
-.nav{position:fixed;inset:0 0 auto;z-index:50;transition:transform var(--dur-3) var(--ease-out),background-color var(--dur-2),box-shadow var(--dur-2)}
-.nav.is-scrolled{background:rgba(238,245,243,.78);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);box-shadow:0 1px 0 var(--line)}
+.nav{position:fixed;inset:0 0 auto;z-index:50;background:rgba(238,245,243,.9);backdrop-filter:saturate(1.4) blur(16px);-webkit-backdrop-filter:saturate(1.4) blur(16px);transition:transform var(--dur-3) var(--ease-out),background-color var(--dur-2),box-shadow var(--dur-2)}
+.nav.is-scrolled{background:rgba(238,245,243,.9);box-shadow:0 1px 0 var(--line)}
 .nav.is-hidden{transform:translateY(-100%)}
 .nav__inner{max-width:var(--maxw);margin:auto;padding:1rem var(--gutter);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:var(--sp-6)}
 .brand{display:inline-flex;align-items:center;gap:.6rem}
@@ -107,9 +107,8 @@ address{font-style:normal}
 /* Copy stays in a left column so the right side is free for the fan blades.
    Override .wrap’s margin-inline:auto so the block does not center into the fan. */
 .hero__copy{position:relative;z-index:3;padding-top:6rem;padding-bottom:4rem;max-width:min(38rem,46vw);width:min(38rem,46vw);margin-inline:0}
-.hero .display{max-width:18em;margin-bottom:var(--sp-5);font-size:clamp(1.85rem,1.15rem + 2.2vw,3.35rem);line-height:1.06;text-wrap:balance;font-weight:700}
+.hero .display{max-width:18em;margin-bottom:var(--sp-7);font-size:clamp(1.85rem,1.15rem + 2.2vw,3.35rem);line-height:1.06;text-wrap:balance;font-weight:450;text-shadow:0 1px 0 rgba(255,255,255,.35)}
 .hero .display.has-metric{font-size:clamp(1.65rem,1.05rem + 1.85vw,3rem)}
-.hero .lead{margin-bottom:var(--sp-7);max-width:36ch;font-size:clamp(1.2rem,1.05rem + .45vw,1.45rem);line-height:1.35;font-weight:var(--fw-semibold);padding-left:.7rem;border-left:3px solid var(--sky-400);box-shadow:none;text-shadow:var(--text-edge),0 0 14px rgba(88,188,235,.18)}
 /* Blade art CSS restored from last known-good deploy (#13) — no left-side mask. */
 .hero__art{position:absolute;inset:0;z-index:1;pointer-events:none}
 /* Sharp wedges only. Blurred wedges are pre-rasterized canvases (.blade--baked) so frames never pay for filter:blur. */
