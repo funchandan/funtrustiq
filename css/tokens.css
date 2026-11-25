@@ -28,7 +28,7 @@
   --sky-600:#0a3a5e;
 
   /* ── Mist / neutrals (deck backgrounds) ── */
-  --mist-100:#f3f6f6;        /* page background */
+  --mist-100:#f3f6f6;        /* page background (fallback) */
   --mist-200:#ecf7f7;        /* deck tint */
   --mist-300:#cfe0dc;        /* deck sage */
   --gray-200:#d3d9df;        /* muted display text, rules */
@@ -36,8 +36,15 @@
   --gray-400:#5d6b7a;        /* secondary text (AA on mist-100) */
   --white:#ffffff;
 
+  /* ── Page mesh gradient (light pastels; ink + soft text stay AA on base) ── */
+  --mesh-mint:#dff0ee;
+  --mesh-sky:#dceef7;
+  --mesh-sage:#e8f0de;
+  --mesh-lilac:#eceaf6;
+  --mesh-base:#eef4f3;
+
   /* ── Semantic ── */
-  --bg:var(--mist-100);
+  --bg:var(--mesh-base);
   --surface:var(--white);
   --ink:var(--navy-600);
   --ink-soft:var(--gray-400);

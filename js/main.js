@@ -227,52 +227,6 @@
     ]
   });
 
-  /* ── Count-up ── */
-  const fmt = (n, sep) => sep ? n.toLocaleString('en-US') : String(n);
-  const cio = new IntersectionObserver(es => es.forEach(e => {
-    if (!e.isIntersecting) return; cio.unobserve(e.target);
-    const el = e.target, end = +el.dataset.count, pre = el.dataset.prefix || '', suf = el.dataset.suffix || '', sep = 'sep' in el.dataset;
-    if (RM) return; const t0 = performance.now();
-    const step = now => { const p = clamp((now - t0) / 1600, 0, 1), v = Math.round(end * (1 - Math.pow(1 - p, 3)));
-      el.textContent = pre + fmt(v, sep) + suf; if (p < 1) requestAnimationFrame(step); };
-    requestAnimationFrame(step);
-  }), { threshold: .6 });
-  $$('[data-count]').forEach(el => cio.observe(el));
-
-  /* ── Story (pinned) ── */
-  const story = $('[data-story]'), lines = $$('[data-line]'), tags = $$('[data-tag]'), gem = $('[data-gem] svg');
-  const onStory = () => {
-    if (!story || innerWidth < 992) return;
-    const r = story.getBoundingClientRect(), p = clamp(-r.top / (r.height - innerHeight), 0, 1);
-    lines.forEach((l, i) => l.classList.toggle('is-on', i === (p < .5 ? 0 : 1)));
-    tags.forEach((t, i) => t.classList.toggle('is-on', p > i * .22 + .05));
-    gem.style.setProperty('--rot', (p * 120 - 20) + 'deg'); gem.style.setProperty('--sc', .9 + Math.sin(p * Math.PI) * .15);
-  };
-
-  /* ── Slider: dots, drag, keyboard ── */
-  $$('[data-slider]').forEach(s => {
-    const track = $('[data-track]', s), slides = $$('.slide', track), dots = $('[data-dots]', s);
-    const btns = slides.map((sl, i) => {
-      const b = d.createElement('button'); b.setAttribute('role', 'tab'); b.setAttribute('aria-label', `Problem ${i + 1}`);
-      b.addEventListener('click', () => track.scrollTo({ left: sl.offsetLeft - slides[0].offsetLeft, behavior: RM ? 'auto' : 'smooth' }));
-      dots.appendChild(b); return b;
-    });
-    const sync = () => {
-      const max = track.scrollWidth - track.clientWidth;
-      const idx = max <= 0 ? 0 : Math.round(track.scrollLeft / max * (slides.length - 1));
-      btns.forEach((b, i) => b.setAttribute('aria-selected', i === idx));
-      dots.style.visibility = max <= 4 ? 'hidden' : 'visible';
-    };
-    track.addEventListener('scroll', sync, { passive: true }); addEventListener('resize', sync); sync();
-    let down = false, sx = 0, sl0 = 0, moved = false;
-    track.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') return; down = true; moved = false; sx = e.clientX; sl0 = track.scrollLeft; track.classList.add('is-drag'); });
-    addEventListener('pointermove', e => { if (!down) return; const dx = e.clientX - sx; if (Math.abs(dx) > 3) moved = true; track.scrollLeft = sl0 - dx; });
-    addEventListener('pointerup', () => { if (!down) return; down = false; track.classList.remove('is-drag');
-      const w = slides[1] ? slides[1].offsetLeft - slides[0].offsetLeft : 1;
-      const i = clamp(Math.round(track.scrollLeft / w), 0, slides.length - 1);
-      track.scrollTo({ left: i * w, behavior: RM ? 'auto' : 'smooth' }); });
-  });
-
   /* ── Solution list: highlight the row nearest viewport centre ── */
   const rows = $$('[data-prow]');
   const onRows = () => {
@@ -281,10 +235,9 @@
     rows.forEach(r => r.classList.toggle('is-on', r === best && bd < innerHeight * .45));
   };
 
-  /* ── Flow rail progress + meeting parallax ── */
-  const flow = $('[data-flow]'), rail = $('[data-rail]'), px = $('[data-parallax]');
-  const onFlow = () => {
-    if (rail) { const r = flow.getBoundingClientRect(); rail.style.setProperty('--p', clamp((innerHeight * .85 - r.top) / (r.height * .8), 0, 1)); }
+  /* ── Meeting parallax ── */
+  const px = $('[data-parallax]');
+  const onParallax = () => {
     if (px && !RM) { const r = px.parentElement.parentElement.getBoundingClientRect(); px.style.setProperty('--py', ((r.top + r.height / 2 - innerHeight / 2) * -.12) + 'px'); }
   };
 
@@ -543,7 +496,7 @@
   }
 
   /* ── Scroll sync. Lenis emits on the same frame it moves the window. ── */
-  const syncScroll = () => { noteScrollHold(); onNav(); onStory(); onRows(); onFlow(); onTimeline(); };
+  const syncScroll = () => { noteScrollHold(); onNav(); onRows(); onParallax(); onTimeline(); };
   let ticking = false;
   const onNativeScroll = () => {
     if (ticking) return;
