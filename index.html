@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>FundTrustIQ — Governance intelligence for mutual fund and ETF boards</title>
 <meta name="description" content="FundTrustIQ is an AI-native governance platform for mutual fund and ETF boards, multi-series trusts, and their service ecosystem.">
-<meta name="theme-color" content="#f3f6f6">
+<meta name="theme-color" content="#eef4f3">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/fraunces-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
 <link rel="preload" href="assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -15,6 +15,13 @@
 <link rel="stylesheet" href="css/lenis.css">
 </head>
 <body>
+<div class="page-bg" aria-hidden="true">
+  <span class="page-bg__blob page-bg__blob--a"></span>
+  <span class="page-bg__blob page-bg__blob--b"></span>
+  <span class="page-bg__blob page-bg__blob--c"></span>
+  <span class="page-bg__blob page-bg__blob--d"></span>
+  <span class="page-bg__noise"></span>
+</div>
 <a class="skip" href="#main">Skip to content</a>
 
 <!-- Shared SVG defs: crystal gradients + facet icons -->
@@ -422,63 +429,6 @@
   </div>
 </section>
 
-<!-- ───────────── STATEMENT ───────────── -->
-<section class="statement" aria-labelledby="st-h">
-  <div class="wrap narrow center">
-    <h2 id="st-h" class="h1 reveal">Fund boards oversee more than <span class="nowrap">$70T in assets</span></h2>
-    <p class="body-lg reveal" style="--d:.1s">Yet they rely on generic portals built for document distribution—not 1940 Act governance.</p>
-  </div>
-  <ul class="facts wrap">
-    <li class="fact reveal"><svg aria-hidden="true"><use width="100%" height="100%" href="#ic-understand"/></svg><span class="fact__k">No vertical-native</span><span class="fact__v">board-governance platform</span></li>
-    <li class="fact reveal" style="--d:.1s"><svg aria-hidden="true"><use width="100%" height="100%" href="#ic-connect"/></svg><span class="fact__k" data-count="70" data-prefix="$" data-suffix="T+">$70T+</span><span class="fact__v">assets overseen by target boards</span></li>
-    <li class="fact reveal" style="--d:.2s"><svg aria-hidden="true"><use width="100%" height="100%" href="#ic-orchestrate"/></svg><span class="fact__k"><span data-count="1000" data-sep>1,000</span> U.S. fund boards</span><span class="fact__v">15,000–20,000 funds &amp; ETFs</span></li>
-  </ul>
-</section>
-
-<!-- ───────────── STICKY STORY ───────────── -->
-<section class="story" aria-label="How FundTrustIQ fits the board" data-story>
-  <div class="story__pin">
-    <div class="story__text">
-      <p class="h1 story__line is-on" data-line>Trustees hold the<br>judgment and authority</p>
-      <p class="h1 story__line" data-line>FundTrustIQ prepares,<br>compares, flags, documents</p>
-    </div>
-    <div class="story__gem" aria-hidden="true" data-gem>
-      <svg viewBox="0 0 300 300">
-        <g class="gem">
-          <path d="M150 20 262 85 150 150z" fill="url(#g-sky)"/>
-          <path d="M262 85 262 215 150 150z" fill="url(#g-navy)"/>
-          <path d="M262 215 150 280 150 150z" fill="url(#g-blue)"/>
-          <path d="M150 280 38 215 150 150z" fill="url(#g-glass)"/>
-          <path d="M38 215 38 85 150 150z" fill="url(#g-ice)"/>
-          <path d="M38 85 150 20 150 150z" fill="url(#g-glass)"/>
-          <path d="M150 20 262 85 262 215 150 280 38 215 38 85z" fill="none" stroke="#fff" stroke-opacity=".6"/>
-        </g>
-      </svg>
-    </div>
-    <ul class="story__tags">
-      <li data-tag>Board materials</li><li data-tag>Fund data</li><li data-tag>Committee workflows</li><li data-tag>Oversight evidence</li>
-    </ul>
-  </div>
-</section>
-
-<!-- ───────────── PROBLEM CAROUSEL ───────────── -->
-<section class="problem" id="problem" aria-labelledby="pb-h">
-  <div class="wrap">
-    <p class="eyebrow reveal">The problem</p>
-    <h2 id="pb-h" class="h2 reveal measure">Fund board oversight runs on fragmented, manual workflows</h2>
-  </div>
-  <div class="slider" data-slider>
-    <div class="slider__track" data-track tabindex="0" aria-label="Problems, scrollable">
-      <article class="slide"><span class="slide__n">01</span><h3 class="h4">Manual coordination across providers</h3><p>Board support staff spend cycles collecting, reconciling, and validating materials.</p></article>
-      <article class="slide"><span class="slide__n">02</span><h3 class="h4">Static board books hide change</h3><p>Trustees receive documents, not connected insight into deltas, trends, and exceptions.</p></article>
-      <article class="slide"><span class="slide__n">03</span><h3 class="h4">Reactive compliance oversight</h3><p>Issues often surface late, after reports are compiled or meetings are underway.</p></article>
-      <article class="slide"><span class="slide__n">04</span><h3 class="h4">Fragmented evidence and actions</h3><p>Decisions, follow-ups, source documents, and approvals are difficult to trace end-to-end.</p></article>
-    </div>
-    <div class="slider__dots" data-dots role="tablist" aria-label="Choose problem"></div>
-  </div>
-  <p class="wrap kicker reveal">More time preparing. <span>Less time on informed oversight.</span></p>
-</section>
-
 <!-- ───────────── SOLUTION LIST ───────────── -->
 <section class="solution" id="solution" aria-labelledby="so-h">
   <div class="wrap">
@@ -510,22 +460,6 @@
       <li class="reveal">Less manual preparation</li><li class="reveal" style="--d:.08s">Faster pre-read</li><li class="reveal" style="--d:.16s">Earlier issue visibility</li><li class="reveal" style="--d:.24s">Defensible oversight</li>
     </ul>
   </div>
-</section>
-
-<!-- ───────────── ORCHESTRATION FLOW ───────────── -->
-<section class="flow" aria-labelledby="fl-h" data-flow>
-  <div class="wrap">
-    <p class="eyebrow reveal">Trust orchestration flow</p>
-    <h2 id="fl-h" class="h2 reveal measure">Every source, one governed path to insight and action</h2>
-  </div>
-  <div class="wrap flow__grid">
-    <div class="flow__rail" aria-hidden="true"><span data-rail></span></div>
-    <div class="flow__col reveal"><span class="flow__step">1</span><h3 class="h4">Ingest &amp; connect</h3><ul><li>Board &amp; committee content</li><li>Custody &amp; fund data</li><li>Legal / compliance inputs</li></ul></div>
-    <div class="flow__col reveal" style="--d:.1s"><span class="flow__step">2</span><h3 class="h4">AI intelligence layer</h3><ul><li>Document reading &amp; extraction</li><li>AI skills &amp; controls</li><li>Exception detection &amp; alerts</li></ul></div>
-    <div class="flow__col reveal" style="--d:.2s"><span class="flow__step">3</span><h3 class="h4">Workflow &amp; governance</h3><ul><li>Tasks, calendar &amp; reminders</li><li>Review, approval &amp; escalation</li><li>Audit trail &amp; evidence</li></ul></div>
-    <div class="flow__col reveal" style="--d:.3s"><span class="flow__step">4</span><h3 class="h4">Consolidated insights &amp; action</h3><ul><li>Board oversight</li><li>Advisor efficiency</li><li>Compliance assurance</li></ul></div>
-  </div>
-  <p class="wrap flow__partners reveal">Connected partners: Board &amp; committee · Advisors / sub-advisors · US bank / custody · Legal · Compliance · Accounting &amp; audit</p>
 </section>
 
 <!-- ───────────── AI CAPABILITY MAP ───────────── -->
