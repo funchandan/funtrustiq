@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Verify site bundle
+        run: |
+          set -euo pipefail
+          test -f index.html
+          test -f .nojekyll
+          test -f css/site.css
+          test -f css/tokens.css
+          test -f js/main.js
+          mkdir -p _site
+          rsync -a \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='_site/' \
+            --exclude='docs/' \
+            ./ _site/
+          test -f _site/index.html
+          test -f _site/css/site.css
+          test -f _site/js/main.js
