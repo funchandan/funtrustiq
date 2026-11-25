@@ -331,10 +331,10 @@
       if (!playing || RM || !inView) return;
       const bar = $('.demo__bar', tabs[index]);
       if (!bar) return;
-      requestAnimationFrame(() => requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
         bar.style.transition = `transform ${STEP_MS}ms linear`;
         bar.style.transform = 'scaleX(1)';
-      }));
+      });
     };
     const arm = () => {
       clearAuto();
@@ -434,6 +434,7 @@
           el.classList.add('is-jumped');
           el.focus({ preventScroll: true });
           el.scrollIntoView({ block: 'nearest', behavior: RM ? 'auto' : 'smooth' });
+          return;
         }
         const role = e.target.closest('[data-role]');
         if (!role) return;
@@ -443,13 +444,7 @@
       });
     }
     syncAutoBtn();
-    if (!RM) {
-      panels[0].dataset.phase = 'load';
-      panels[0].setAttribute('aria-busy', 'true');
-    } else {
-      panels[0].dataset.phase = 'ready';
-      panels[0].setAttribute('aria-busy', 'false');
-    }
+    setPhase(panels[0], RM ? 'ready' : 'load');
     const setLive = on => {
       const was = inView;
       inView = on;
