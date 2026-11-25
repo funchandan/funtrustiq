@@ -33,15 +33,15 @@
   --mist-300:#cfe0dc;        /* deck sage */
   --gray-200:#d3d9df;        /* muted display text, rules */
   --gray-300:#9aa7b4;
-  --gray-400:#5d6b7a;        /* secondary text (AA on mist-100) */
+  --gray-400:#4a5868;        /* secondary text (AA on mesh blobs + base) */
   --white:#ffffff;
 
-  /* ── Page mesh gradient (light pastels; ink + soft text stay AA on base) ── */
-  --mesh-mint:#dff0ee;
-  --mesh-sky:#dceef7;
-  --mesh-sage:#e8f0de;
-  --mesh-lilac:#eceaf6;
-  --mesh-base:#eef4f3;
+  /* ── Page mesh gradient (distinct pastels; ink + soft text AA) ── */
+  --mesh-mint:#bfe8e2;
+  --mesh-sky:#b7dff0;
+  --mesh-sage:#d4e8bc;
+  --mesh-lilac:#d9d2f0;
+  --mesh-base:#e6f0ee;
 
   /* ── Semantic ── */
   --bg:var(--mesh-base);
