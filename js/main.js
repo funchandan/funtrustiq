@@ -63,26 +63,36 @@
     }
   };
 
-  /* ── Platform dropdown ── */
-  const mBtn = $('[data-menu-btn]'), menu = $('[data-menu]'), item = mBtn.closest('.nav__item');
+  /* ── Platform dropdown (optional — removed from markup when unused) ── */
+  const mBtn = $('[data-menu-btn]'), menu = $('[data-menu]');
+  const item = mBtn ? mBtn.closest('.nav__item') : null;
   let mT;
-  const setMenu = open => { menu.classList.toggle('is-open', open); mBtn.setAttribute('aria-expanded', open); };
-  mBtn.addEventListener('click', () => setMenu(mBtn.getAttribute('aria-expanded') !== 'true'));
-  item.addEventListener('mouseenter', () => { clearTimeout(mT); setMenu(true); });
-  item.addEventListener('mouseleave', () => { mT = setTimeout(() => setMenu(false), 160); });
-  item.addEventListener('focusout', e => { if (!item.contains(e.relatedTarget)) setMenu(false); });
-  $$('a', menu).forEach(a => a.addEventListener('click', () => setMenu(false)));
-  d.addEventListener('keydown', e => { if (e.key === 'Escape') { setMenu(false); toggleMobile(false); } });
+  const setMenu = open => {
+    if (!menu || !mBtn) return;
+    menu.classList.toggle('is-open', open);
+    mBtn.setAttribute('aria-expanded', open);
+  };
+  if (mBtn && menu && item) {
+    mBtn.addEventListener('click', () => setMenu(mBtn.getAttribute('aria-expanded') !== 'true'));
+    item.addEventListener('mouseenter', () => { clearTimeout(mT); setMenu(true); });
+    item.addEventListener('mouseleave', () => { mT = setTimeout(() => setMenu(false), 160); });
+    item.addEventListener('focusout', e => { if (!item.contains(e.relatedTarget)) setMenu(false); });
+    $$('a', menu).forEach(a => a.addEventListener('click', () => setMenu(false)));
+  }
 
   /* ── Mobile menu ── */
   const burger = $('[data-burger]'), mm = $('[data-mobile-menu]');
   const toggleMobile = open => {
+    if (!burger || !mm) return;
     open = open ?? burger.getAttribute('aria-expanded') !== 'true';
     burger.setAttribute('aria-expanded', open); burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     mm.hidden = !open; nav.classList.toggle('is-scrolled', open || scrollY > 20);
   };
-  burger.addEventListener('click', () => toggleMobile());
-  $$('a', mm).forEach(a => a.addEventListener('click', () => toggleMobile(false)));
+  if (burger && mm) {
+    burger.addEventListener('click', () => toggleMobile());
+    $$('a', mm).forEach(a => a.addEventListener('click', () => toggleMobile(false)));
+  }
+  d.addEventListener('keydown', e => { if (e.key === 'Escape') { setMenu(false); toggleMobile(false); } });
 
   /* ── Marquee: duplicate for seamless loop ── */
   $$('[data-marquee] .marquee__track').forEach(t => {
@@ -205,17 +215,17 @@
   // a = start angle (0 = 12 o'clock, clockwise), th = wedge width, r = radius × viewport
   // Origin sits on the right so the fan clears the left hero copy.
   if (hero) Fan(hero, {
-    px: w => w < 700 ? 1.02 : .98, py: w => w < 700 ? .02 : .04, start: 168,
-    scale: (w, h) => w < 700 ? h * .72 : Math.max(w * 1.05, h * 1.55),
+    px: w => w < 700 ? 1.04 : 1.0, py: w => w < 700 ? .0 : .02, start: 175,
+    scale: (w, h) => w < 700 ? h * .78 : Math.max(w * 1.12, h * 1.65),
     blades: [
-      { a: 178, th: 28, r: .5, c: NAVY, blur: 10, amp: 2, sp: .3, par: .55, z: 1 },
-      { a: 208, th: 22, r: .44, c: NAVY2, blur: 8, amp: 2.4, sp: .26, par: .7, z: 1 },
-      { a: 166, th: 12, r: .38, c: BLUE, blur: 12, amp: 3, sp: .42, par: .45, z: 2 },
-      { a: 172, th: 16, r: .66, c: MID, blur: 0, amp: 1.8, sp: .38, par: 1.2, z: 4 },
-      { a: 197, th: 17, r: .74, c: BLUE, blur: 0, amp: 2.2, sp: .3, par: 1.4, z: 5 },
-      { a: 224, th: 15, r: .68, c: SKY2, blur: 0, amp: 2.6, sp: .27, par: 1.6, z: 6 },
-      { a: 248, th: 14, r: .78, c: SKY, blur: 0, amp: 2.4, sp: .24, par: 1.8, z: 6 },
-      { a: 213, th: 6, r: .9, c: '#8fd1f1', blur: 1, amp: 1.6, sp: .2, par: 2, z: 7 },
+      { a: 185, th: 30, r: .52, c: NAVY, blur: 8, amp: 2, sp: .3, par: .5, z: 1 },
+      { a: 214, th: 24, r: .46, c: NAVY2, blur: 6, amp: 2.4, sp: .26, par: .65, z: 1 },
+      { a: 172, th: 14, r: .4, c: BLUE, blur: 10, amp: 3, sp: .42, par: .4, z: 2 },
+      { a: 180, th: 18, r: .7, c: MID, blur: 0, amp: 1.8, sp: .38, par: 1.1, z: 4 },
+      { a: 205, th: 18, r: .78, c: BLUE, blur: 0, amp: 2.2, sp: .3, par: 1.3, z: 5 },
+      { a: 232, th: 16, r: .72, c: SKY2, blur: 0, amp: 2.6, sp: .27, par: 1.5, z: 6 },
+      { a: 255, th: 15, r: .82, c: SKY, blur: 0, amp: 2.4, sp: .24, par: 1.7, z: 6 },
+      { a: 220, th: 7, r: .94, c: '#2f9fd4', blur: 0, amp: 1.6, sp: .2, par: 1.9, z: 7 },
     ]
   });
   const fin = $('[data-final-art]');
