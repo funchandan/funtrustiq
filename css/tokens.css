@@ -55,23 +55,31 @@
   --accent:var(--sky-400);
   --focus:#0079c7;
 
-  /* ── Type scale (rem, 16px base; mirrors Greenlock's h1 74/81, h2 36/46, h4 22/30, body-1 28/38, body-3 20/32) ── */
+  /* ── Type scale (stepped up for emphatic, tech-forward hierarchy) ── */
   --font-display:"FT Display",Georgia,"Times New Roman",serif;
   --font-sans:"FT Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --fs-display:clamp(2.75rem,1.6rem + 4.6vw,5.25rem);  /* hero */
-  --fs-h1:clamp(2.25rem,1.5rem + 3vw,4.625rem);
-  --fs-h2:clamp(1.875rem,1.4rem + 1.8vw,3rem);
-  --fs-h3:clamp(1.5rem,1.2rem + 1vw,2.25rem);
-  --fs-h4:1.375rem;
-  --fs-lead:clamp(1.25rem,1.05rem + .7vw,1.75rem);
-  --fs-body:1.125rem;
-  --fs-small:.9375rem;
-  --fs-micro:.75rem;
-  --lh-tight:1.08;
-  --lh-snug:1.25;
-  --lh-body:1.55;
-  --tracking-display:-.02em;
-  --tracking-caps:.14em;
+  --fs-display:clamp(3rem,1.7rem + 5vw,5.75rem);  /* hero */
+  --fs-h1:clamp(2.5rem,1.6rem + 3.4vw,4.9rem);
+  --fs-h2:clamp(2.05rem,1.5rem + 2.1vw,3.35rem);
+  --fs-h3:clamp(1.65rem,1.3rem + 1.15vw,2.45rem);
+  --fs-h4:1.5rem;
+  --fs-lead:clamp(1.35rem,1.1rem + .8vw,1.9rem);
+  --fs-body:1.1875rem;
+  --fs-small:1.0625rem;
+  --fs-micro:.8125rem;
+  --lh-tight:1.06;
+  --lh-snug:1.22;
+  --lh-body:1.5;
+  --tracking-display:-.025em;
+  --tracking-caps:.16em;
+  --fw-regular:500;
+  --fw-semibold:650;
+  --fw-bold:750;
+  --text-edge:0 1px 0 rgba(255,255,255,.65);
+  --text-depth:0 10px 28px rgba(7,21,48,.12);
+  --text-glow:0 0 18px rgba(88,188,235,.28),0 0 2px rgba(0,96,158,.18);
+  --text-glow-strong:0 0 24px rgba(88,188,235,.42),0 1px 0 rgba(255,255,255,.35);
+  --text-glow-invert:0 0 22px rgba(88,188,235,.45),0 0 40px rgba(0,96,158,.25);
 
   /* ── Spacing (8pt base) ── */
   --sp-1:.25rem; --sp-2:.5rem; --sp-3:.75rem; --sp-4:1rem; --sp-5:1.5rem;
