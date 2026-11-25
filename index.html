@@ -20,6 +20,8 @@
   <span class="page-bg__blob page-bg__blob--b"></span>
   <span class="page-bg__blob page-bg__blob--c"></span>
   <span class="page-bg__blob page-bg__blob--d"></span>
+  <span class="page-bg__depth"></span>
+  <span class="page-bg__grid"></span>
   <span class="page-bg__noise"></span>
 </div>
 <a class="skip" href="#main">Skip to content</a>
@@ -89,15 +91,13 @@
       </div>
       <a class="nav__link" href="#demo">Product</a>
       <a class="nav__link" href="#modules">Governance</a>
-      <a class="nav__link" href="#ai">AI skills</a>
-      <a class="nav__link" href="#pricing">Pricing</a>
-      <a class="nav__link" href="#engagement">Engagement</a>
+      <a class="nav__link" href="#solution">Platform</a>
     </nav>
     <a class="nav__cta link-u" href="#contact">Request a demo</a>
     <button class="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" data-burger><span></span><span></span></button>
   </div>
   <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
-    <a href="#demo">Product</a><a href="#solution">Platform</a><a href="#modules">Governance</a><a href="#ai">AI skills</a><a href="#pricing">Pricing</a><a href="#engagement">Engagement</a><a href="#contact">Request a demo ↳</a>
+    <a href="#demo">Product</a><a href="#solution">Platform</a><a href="#modules">Governance</a><a href="#contact">Request a demo ↳</a>
   </div>
 </header>
 
@@ -162,9 +162,7 @@
 
     <div class="os" data-os>
       <div class="os__bar">
-        <div class="os__lights" aria-hidden="true"><i></i><i></i><i></i></div>
         <div class="os__title">FundTrust IQ<span class="os__title-rest"> — Sample Trust</span></div>
-        <div class="os__illu">Illustrative data</div>
       </div>
       <div class="os__body">
         <div role="tabpanel" id="dp-1" aria-labelledby="dt-1" class="scene" data-scene="intake" tabindex="0">
@@ -400,21 +398,152 @@
     <p class="gov__cycle">Continuous oversight cycle: decisions, actions, new reports and exceptions feed the next meeting.</p>
     <p class="gov__retain">Directors retain independent judgment and approvals.</p>
   </div>
-  <div class="wrap gov__cards">
-    <p class="gov__cards-k">Platform modules</p>
-    <ul class="gov__secure" aria-label="Secure workspace">
-      <li>Secure workspace</li>
-      <li>Role-based access</li>
-      <li>Audit trail</li>
-      <li>Source traceability</li>
-    </ul>
-    <div class="cards">
-      <a class="card reveal" href="#contact"><span class="card__n">01</span><h3 class="h4">Board &amp; Committee Workspaces</h3><p>Meetings, agendas, actions, approvals, and committee workspaces.</p><span class="card__line" aria-hidden="true"></span></a>
-      <a class="card reveal" style="--d:.06s" href="#contact"><span class="card__n">02</span><h3 class="h4">Board Package Automation</h3><p>Collect, organize, validate, and publish meeting-ready materials.</p><span class="card__line" aria-hidden="true"></span></a>
-      <a class="card reveal" style="--d:.12s" href="#contact"><span class="card__n">03</span><h3 class="h4">Fund &amp; Adviser Oversight</h3><p>Fund-level, adviser-level, and service-provider views.</p><span class="card__line" aria-hidden="true"></span></a>
-      <a class="card reveal" href="#contact"><span class="card__n">04</span><h3 class="h4">Document Intelligence</h3><p>Search, summarize, compare versions, annotate, and trace sources.</p><span class="card__line" aria-hidden="true"></span></a>
-      <a class="card reveal" style="--d:.06s" href="#contact"><span class="card__n">05</span><h3 class="h4">Exception &amp; Action Management</h3><p>Identify changes, assign owners, escalate issues, and evidence resolution.</p><span class="card__line" aria-hidden="true"></span></a>
-      <a class="card reveal" style="--d:.12s" href="#contact"><span class="card__n">06</span><h3 class="h4">Governance Insights &amp; Reporting</h3><p>Role-based dashboards, recurring reports, and board-ready briefings.</p><span class="card__line" aria-hidden="true"></span></a>
+  <div class="wrap apps" data-apps>
+    <h2 class="apps__title reveal">Platform modules</h2>
+    <div class="apps__pills" role="tablist" aria-label="Platform modules">
+      <button type="button" role="tab" id="app-t-1" aria-controls="app-p-1" aria-selected="true" tabindex="0">Workspaces</button>
+      <button type="button" role="tab" id="app-t-2" aria-controls="app-p-2" aria-selected="false" tabindex="-1">Board packages</button>
+      <button type="button" role="tab" id="app-t-3" aria-controls="app-p-3" aria-selected="false" tabindex="-1">Fund oversight</button>
+      <button type="button" role="tab" id="app-t-4" aria-controls="app-p-4" aria-selected="false" tabindex="-1">Document intel</button>
+      <button type="button" role="tab" id="app-t-5" aria-controls="app-p-5" aria-selected="false" tabindex="-1">Exceptions</button>
+      <button type="button" role="tab" id="app-t-6" aria-controls="app-p-6" aria-selected="false" tabindex="-1">Insights</button>
+    </div>
+
+    <div class="apps__shell">
+      <button type="button" class="apps__nav apps__nav--prev" data-apps-prev aria-label="Previous module">‹</button>
+      <button type="button" class="apps__nav apps__nav--next" data-apps-next aria-label="Next module">›</button>
+
+      <div role="tabpanel" id="app-p-1" class="apps__panel is-active" aria-labelledby="app-t-1" data-apps-panel>
+        <aside class="apps__side" data-apps-side>
+          <div class="apps__acc is-open">
+            <button type="button" class="apps__acc-btn" aria-expanded="true"><span class="apps__acc-ic apps__acc-ic--proc" aria-hidden="true"></span><span>Processes</span><span class="apps__chev" aria-hidden="true"></span></button>
+            <ul class="apps__checks"><li>Meetings, agendas &amp; minutes</li><li>Committee workspaces</li><li>Actions &amp; approvals</li><li>Role-based participant views</li><li>Calendar &amp; reminders</li></ul>
+          </div>
+          <div class="apps__acc">
+            <button type="button" class="apps__acc-btn" aria-expanded="false"><span class="apps__acc-ic apps__acc-ic--dash" aria-hidden="true"></span><span>Dashboards</span><span class="apps__chev" aria-hidden="true"></span></button>
+            <ul class="apps__checks" hidden><li>Board calendar overview</li><li>Open actions by owner</li><li>Committee readiness</li></ul>
+          </div>
+          <div class="apps__acc">
+            <button type="button" class="apps__acc-btn" aria-expanded="false"><span class="apps__acc-ic apps__acc-ic--alert" aria-hidden="true"></span><span>Alerts</span><span class="apps__chev" aria-hidden="true"></span></button>
+            <ul class="apps__checks" hidden><li>Overdue actions</li><li>Missing materials</li><li>Unapproved minutes</li></ul>
+          </div>
+        </aside>
+        <div class="apps__stage" aria-hidden="true">
+          <article class="apps__card apps__card--a"><p class="apps__card-k">Meeting package</p><ul class="apps__steps"><li class="is-ok">Step 1: Agenda locked</li><li class="is-bad">Step 2: Materials incomplete</li><li class="is-muted">Step 3: Publish to directors</li></ul></article>
+          <article class="apps__card apps__card--b"><p class="apps__card-q">Assign follow-up?</p><div class="apps__radios"><span class="is-on">Yes</span><span>No</span></div><p class="apps__card-q">Owner</p><div class="apps__chips"><span>Board support</span><span class="is-on">CCO</span><span>Counsel</span></div></article>
+          <article class="apps__card apps__card--c"><p>Open workspace or attach evidence</p></article>
+        </div>
+      </div>
+
+      <div role="tabpanel" id="app-p-2" class="apps__panel" aria-labelledby="app-t-2" data-apps-panel hidden>
+        <aside class="apps__side" data-apps-side>
+          <div class="apps__acc is-open">
+            <button type="button" class="apps__acc-btn" aria-expanded="true"><span class="apps__acc-ic apps__acc-ic--proc" aria-hidden="true"></span><span>Processes</span><span class="apps__chev" aria-hidden="true"></span></button>
+            <ul class="apps__checks"><li>Secure source intake</li><li>Classify &amp; validate</li><li>Assemble meeting book</li><li>Role-based publish</li><li>Version compare</li></ul>
+          </div>
+          <div class="apps__acc">
+            <button type="button" class="apps__acc-btn" aria-expanded="false"><span class="apps__acc-ic apps__acc-ic--dash" aria-hidden="true"></span><span>Dashboards</span><span class="apps__chev" aria-hidden="true"></span></button>
+            <ul class="apps__checks" hidden><li>Intake status by provider</li><li>Package completeness</li><li>Publish history</li></ul>
+          </div>
+          <div class="apps__acc">
+            <button type="button" class="apps__acc-btn" aria-expanded="false"><span class="apps__acc-ic apps__acc-ic--alert" aria-hidden="true"></span><span>Alerts</span><span class="apps__chev" aria-hidden="true"></span></button>
+            <ul class="apps__checks" hidden><li>Late submissions</li><li>Validation failures</li><li>Changed since last period</li></ul>
+          </div>
+        </aside>
+        <div class="apps__stage" aria-hidden="true">
+          <article class="apps__card apps__card--a"><p class="apps__card-k">Package pipeline</p><ul class="apps__steps"><li class="is-ok">Step 1: Sources received</li><li class="is-ok">Step 2: Validated</li><li class="is-muted">Step 3: Awaiting publish</li></ul></article>
+          <article class="apps__card apps__card--b"><p class="apps__card-q">New / changed material?</p><div class="apps__radios"><span class="is-on">Yes</span><span>No</span></div><p class="apps__card-q">Flag for</p><div class="apps__chips"><span class="is-on">Directors</span><span>Adviser</span><span>Counsel</span></div></article>
+          <article class="apps__card apps__card--c"><p>Publish board package</p></article>
+        </div>
+      </div>
+
+      <div role="tabpanel" id="app-p-3" class="apps__panel" aria-labelledby="app-t-3" data-apps-panel hidden>
+        <aside class="apps__side" data-apps-side>
+          <div class="apps__acc is-open">
+            <button type="button" class="apps__acc-btn" aria-expanded="true"><span class="apps__acc-ic apps__acc-ic--proc" aria-hidden="true"></span><span>Processes</span><span class="apps__chev" aria-hidden="true"></span></button>
+            <ul class="apps__checks"><li>Fund-level oversight views</li><li>Adviser &amp; sub-adviser scan</li><li>Service-provider tracking</li><li>15(c) contract &amp; fee context</li><li>Peer &amp; expense compare</li></ul>
+          </div>
+          <div class="apps__acc">
+            <button type="button" class="apps__acc-btn" aria-expanded="false"><span class="apps__acc-ic apps__acc-ic--dash" aria-hidden="true"></span><span>Dashboards</span><span class="apps__chev" aria-hidden="true"></span></button>
+            <ul class="apps__checks" hidden><li>Portfolio coverage map</li><li>Adviser exception roll-up</li><li>Fee schedule deltas</li></ul>
+          </div>
+          <div class="apps__acc">
+            <button type="button" class="apps__acc-btn" aria-expanded="false"><span class="apps__acc-ic apps__acc-ic--alert" aria-hidden="true"></span><span>Alerts</span><span class="apps__chev" aria-hidden="true"></span></button>
+            <ul class="apps__checks" hidden><li>Expense-cap language change</li><li>Peer set gap</li><li>Missing adviser response</li></ul>
+          </div>
+        </aside>
+        <div class="apps__stage" aria-hidden="true">
+          <article class="apps__card apps__card--a"><p class="apps__card-k">15(c) review</p><ul class="apps__steps"><li class="is-ok">Step 1: Response ingested</li><li class="is-bad">Step 2: Peer set incomplete</li><li class="is-muted">Step 3: Trustee questions</li></ul></article>
+          <article class="apps__card apps__card--b"><p class="apps__card-q">Escalate exception?</p><div class="apps__radios"><span class="is-on">Yes</span><span>No</span></div><p class="apps__card-q">Reason</p><div class="apps__chips"><span>Fee change</span><span class="is-on">Peer gap</span><span>Cap revise</span></div></article>
+          <article class="apps__card apps__card--c"><p>Open fund / adviser view</p></article>
+        </div>
+      </div>
+
+      <div role="tabpanel" id="app-p-4" class="apps__panel" aria-labelledby="app-t-4" data-apps-panel hidden>
+        <aside class="apps__side" data-apps-side>
+          <div class="apps__acc is-open">
+            <button type="button" class="apps__acc-btn" aria-expanded="true"><span class="apps__acc-ic apps__acc-ic--proc" aria-hidden="true"></span><span>Processes</span><span class="apps__chev" aria-hidden="true"></span></button>
+            <ul class="apps__checks"><li>Search &amp; retrieve sources</li><li>Summarize &amp; brief</li><li>Compare versions / periods</li><li>Annotate with source links</li><li>Ask-a-question against the book</li></ul>
+          </div>
+          <div class="apps__acc">
+            <button type="button" class="apps__acc-btn" aria-expanded="false"><span class="apps__acc-ic apps__acc-ic--dash" aria-hidden="true"></span><span>Dashboards</span><span class="apps__chev" aria-hidden="true"></span></button>
+            <ul class="apps__checks" hidden><li>Reading progress</li><li>Annotation density</li><li>Delta highlights</li></ul>
+          </div>
+          <div class="apps__acc">
+            <button type="button" class="apps__acc-btn" aria-expanded="false"><span class="apps__acc-ic apps__acc-ic--alert" aria-hidden="true"></span><span>Alerts</span><span class="apps__chev" aria-hidden="true"></span></button>
+            <ul class="apps__checks" hidden><li>Material change detected</li><li>Unvalidated AI reading</li><li>Broken source link</li></ul>
+          </div>
+        </aside>
+        <div class="apps__stage" aria-hidden="true">
+          <article class="apps__card apps__card--a"><p class="apps__card-k">AI reading</p><ul class="apps__steps"><li class="is-ok">Step 1: Passage extracted</li><li class="is-ok">Step 2: Delta flagged</li><li class="is-muted">Step 3: Human validation</li></ul></article>
+          <article class="apps__card apps__card--b"><p class="apps__card-q">Validate summary?</p><div class="apps__radios"><span class="is-on">Yes</span><span>No</span></div><p class="apps__card-q">Focus</p><div class="apps__chips"><span class="is-on">Expense cap</span><span>Fees</span><span>Peers</span></div></article>
+          <article class="apps__card apps__card--c"><p>View source passage</p></article>
+        </div>
+      </div>
+
+      <div role="tabpanel" id="app-p-5" class="apps__panel" aria-labelledby="app-t-5" data-apps-panel hidden>
+        <aside class="apps__side" data-apps-side>
+          <div class="apps__acc is-open">
+            <button type="button" class="apps__acc-btn" aria-expanded="true"><span class="apps__acc-ic apps__acc-ic--proc" aria-hidden="true"></span><span>Processes</span><span class="apps__chev" aria-hidden="true"></span></button>
+            <ul class="apps__checks"><li>Detect changes &amp; exceptions</li><li>Assign owners</li><li>Escalate &amp; track</li><li>Evidence resolution</li><li>Carry forward to next meeting</li></ul>
+          </div>
+          <div class="apps__acc">
+            <button type="button" class="apps__acc-btn" aria-expanded="false"><span class="apps__acc-ic apps__acc-ic--dash" aria-hidden="true"></span><span>Dashboards</span><span class="apps__chev" aria-hidden="true"></span></button>
+            <ul class="apps__checks" hidden><li>Open exceptions</li><li>Aging by severity</li><li>Closure rate</li></ul>
+          </div>
+          <div class="apps__acc">
+            <button type="button" class="apps__acc-btn" aria-expanded="false"><span class="apps__acc-ic apps__acc-ic--alert" aria-hidden="true"></span><span>Alerts</span><span class="apps__chev" aria-hidden="true"></span></button>
+            <ul class="apps__checks" hidden><li>SLA breach risk</li><li>Unowned exception</li><li>Repeated finding</li></ul>
+          </div>
+        </aside>
+        <div class="apps__stage" aria-hidden="true">
+          <article class="apps__card apps__card--a"><p class="apps__card-k">Exception</p><ul class="apps__steps"><li class="is-ok">Step 1: Finding logged</li><li class="is-bad">Step 2: Owner unassigned</li><li class="is-muted">Step 3: Evidence attached</li></ul></article>
+          <article class="apps__card apps__card--b"><p class="apps__card-q">Escalate now?</p><div class="apps__radios"><span class="is-on">Yes</span><span>No</span></div><p class="apps__card-q">Severity</p><div class="apps__chips"><span>Low</span><span class="is-on">Medium</span><span>High</span></div></article>
+          <article class="apps__card apps__card--c"><p>Open action &amp; audit trail</p></article>
+        </div>
+      </div>
+
+      <div role="tabpanel" id="app-p-6" class="apps__panel" aria-labelledby="app-t-6" data-apps-panel hidden>
+        <aside class="apps__side" data-apps-side>
+          <div class="apps__acc is-open">
+            <button type="button" class="apps__acc-btn" aria-expanded="true"><span class="apps__acc-ic apps__acc-ic--proc" aria-hidden="true"></span><span>Processes</span><span class="apps__chev" aria-hidden="true"></span></button>
+            <ul class="apps__checks"><li>Role-based dashboards</li><li>Recurring board reports</li><li>Meeting briefings</li><li>Oversight trend views</li><li>Export audit evidence</li></ul>
+          </div>
+          <div class="apps__acc">
+            <button type="button" class="apps__acc-btn" aria-expanded="false"><span class="apps__acc-ic apps__acc-ic--dash" aria-hidden="true"></span><span>Dashboards</span><span class="apps__chev" aria-hidden="true"></span></button>
+            <ul class="apps__checks" hidden><li>Trustee briefing pack</li><li>Compliance overview</li><li>Portfolio exceptions</li></ul>
+          </div>
+          <div class="apps__acc">
+            <button type="button" class="apps__acc-btn" aria-expanded="false"><span class="apps__acc-ic apps__acc-ic--alert" aria-hidden="true"></span><span>Alerts</span><span class="apps__chev" aria-hidden="true"></span></button>
+            <ul class="apps__checks" hidden><li>Report overdue</li><li>Metric drift</li><li>Brief incomplete</li></ul>
+          </div>
+        </aside>
+        <div class="apps__stage" aria-hidden="true">
+          <article class="apps__card apps__card--a"><p class="apps__card-k">Board briefing</p><ul class="apps__steps"><li class="is-ok">Step 1: Metrics compiled</li><li class="is-ok">Step 2: Exceptions ranked</li><li class="is-muted">Step 3: Ready for pre-read</li></ul></article>
+          <article class="apps__card apps__card--b"><p class="apps__card-q">Share with board?</p><div class="apps__radios"><span class="is-on">Yes</span><span>No</span></div><p class="apps__card-q">Audience</p><div class="apps__chips"><span class="is-on">Directors</span><span>Officers</span><span>Advisers</span></div></article>
+          <article class="apps__card apps__card--c"><p>Export board-ready brief</p></article>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -462,45 +591,6 @@
   </div>
 </section>
 
-<!-- ───────────── AI CAPABILITY MAP ───────────── -->
-<section class="ai" id="ai" aria-labelledby="ai-h">
-  <div class="wrap">
-    <p class="eyebrow reveal">AI capability map</p>
-    <h2 id="ai-h" class="h2 reveal measure">AI skills built around the documents, decisions, committees, and evidence unique to fund boards</h2>
-    <div class="tabs" data-tabs>
-      <div class="tabs__list" role="tablist" aria-label="Capability layers">
-        <button role="tab" id="t-1" aria-controls="p-1" aria-selected="true" tabindex="0"><span>Foundation layer</span><small>All documents, governance controls, and board-wide AI</small></button>
-        <button role="tab" id="t-2" aria-controls="p-2" aria-selected="false" tabindex="-1"><span>Committee layer</span><small>Specialized vertical skills by committee</small></button>
-        <button role="tab" id="t-3" aria-controls="p-3" aria-selected="false" tabindex="-1"><span>Outcome layer</span><small>What trustees and management receive</small></button>
-      </div>
-      <div class="tabs__panels">
-        <div role="tabpanel" id="p-1" aria-labelledby="t-1" class="panel is-active">
-          <dl class="skills">
-            <div><dt>Secure Document Intake</dt><dd>Ingest, classify, index, and retain source materials</dd></div>
-            <div><dt>Reading &amp; Briefing Assistant</dt><dd>Summaries, Q&amp;A, annotations, and meeting briefs</dd></div>
-            <div><dt>Change &amp; Delta Detection</dt><dd>Compare periods, versions, responses, and exceptions</dd></div>
-            <div><dt>Evidence &amp; Audit Trail</dt><dd>Source-linked outputs, approvals, actions, and records</dd></div>
-            <div><dt>Governance Copilot</dt><dd>Role-aware assistance for trustees, officers, and advisers</dd></div>
-          </dl>
-        </div>
-        <div role="tabpanel" id="p-2" aria-labelledby="t-2" class="panel" hidden>
-          <dl class="skills">
-            <div><dt>Board of Trustees</dt><dd>Board-book briefing · Fund/adviser scan · Annual compliance review</dd></div>
-            <div><dt>Contract Committee</dt><dd>15(c) response review · FUSE analysis · Expense and peer comparison</dd></div>
-            <div><dt>Regulatory Oversight</dt><dd>CCO report review · Liquidity and derivatives monitoring · Code-of-ethics, security scans</dd></div>
-            <div><dt>Audit Committee</dt><dd>Semiannual report · Auditor presentation · Financial-statement issue detection</dd></div>
-            <div><dt>Nominating &amp; Governance</dt><dd>Meeting summary · Section callouts · Board effectiveness and governance tracking</dd></div>
-          </dl>
-        </div>
-        <div role="tabpanel" id="p-3" aria-labelledby="t-3" class="panel" hidden>
-          <ul class="outlist"><li>Faster pre-read</li><li>Clearer exceptions</li><li>Better questions</li><li>Defensible oversight</li></ul>
-        </div>
-      </div>
-    </div>
-    <p class="note reveal">Not generic AI chat—purpose-built intelligence for 1940 Act fund-board oversight.</p>
-  </div>
-</section>
-
 <!-- ───────────── MEETINGS (dark) ───────────── -->
 <section class="meet" aria-labelledby="me-h">
   <div class="meet__media" aria-hidden="true"><img src="assets/img/boardroom.jpg" alt="" loading="lazy" width="1600" height="1065" data-parallax></div>
@@ -511,51 +601,6 @@
       <li>Board meeting</li><li>Board meeting (special)</li><li>Executive committee</li><li>Compensation committee</li><li>Contract committee</li><li>Nominating governance committee</li><li>Regulatory oversight committee</li><li>Risk &amp; compliance committee</li><li>Valuation committee</li><li>Audit committee</li><li>CCO / CFO / COO report</li><li>Legal regulatory report</li>
     </ul>
     <p class="meet__note reveal">Fiduciary duties and ultimate decision-making authority remain with the human directors.</p>
-  </div>
-</section>
-
-<!-- ───────────── TRUST BY DESIGN ───────────── -->
-<section class="secure" aria-labelledby="se-h">
-  <div class="wrap secure__grid">
-    <div class="secure__left">
-      <svg class="secure__ic float" aria-hidden="true"><use width="100%" height="100%" href="#ic-evidence"/></svg>
-      <h2 id="se-h" class="h2 reveal">Trust<br>by design</h2>
-    </div>
-    <div class="secure__list">
-      <div class="reveal"><h3 class="h4">Secure workspace</h3><p>Board materials, fund data, and committee workflows in one secure operating environment.</p></div>
-      <div class="reveal"><h3 class="h4">Role-based access &amp; audit trail</h3><p>Included in every paid plan, alongside the core governance platform.</p></div>
-      <div class="reveal"><h3 class="h4">Source traceability</h3><p>Source-linked outputs, approvals, actions, and records—traceable end-to-end.</p></div>
-      <div class="reveal"><h3 class="h4">Human judgment stays in charge</h3><p>AI assists with review and preparation. Trustees retain independent judgment and final decision authority.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ───────────── PRICING ───────────── -->
-<section class="pricing" id="pricing" aria-labelledby="pr-h">
-  <div class="wrap">
-    <p class="eyebrow reveal">Pricing &amp; scale</p>
-    <h2 id="pr-h" class="h2 reveal measure">One governance platform—scaled by funds, users, AI usage, and enterprise service requirements</h2>
-  </div>
-  <div class="wrap tiers">
-    <article class="tier reveal"><h3 class="tier__n">Explorer</h3><p class="tier__p">Free</p><p class="tier__s">30-day guided evaluation</p><ul><li>One fund</li><li>30-day trial</li><li>Full platform access</li><li>All AI skills</li></ul><p class="tier__f">Experience governance intelligence in action.</p></article>
-    <article class="tier reveal" style="--d:.05s"><h3 class="tier__n">Board Essential</h3><p class="tier__p">$25,000<small>/year</small></p><p class="tier__s">For single-board trusts beginning their digital governance journey</p><ul><li>Up to 10 funds</li><li>Full platform access</li><li>All AI skills</li><li>Implementation $5,000</li></ul><p class="tier__f">Digitize and organize core board governance.</p></article>
-    <article class="tier tier--feat reveal" style="--d:.1s"><h3 class="tier__n">Trust Governance</h3><p class="tier__p">$60,000<small>/year</small></p><p class="tier__s">For boards that need continuous oversight, evidence, and workflow intelligence</p><ul><li>Up to 30 funds</li><li>Full platform access</li><li>AI skills tuned</li><li>Implementation $5,000</li></ul><p class="tier__f">Turn board activity into continuous oversight.</p></article>
-    <article class="tier reveal" style="--d:.15s"><h3 class="tier__n">Multi Series</h3><p class="tier__p">$100,000<small>/year</small></p><p class="tier__s">For complex trusts requiring portfolio-wide intelligence and scalable governance controls</p><ul><li>Up to 100 funds</li><li>Full platform access</li><li>AI skills tuned</li><li>Implementation $10,000</li></ul><p class="tier__f">Scale governance intelligence across the portfolio.</p></article>
-    <article class="tier reveal" style="--d:.2s"><h3 class="tier__n">Enterprise</h3><p class="tier__p">Custom</p><p class="tier__s">For administrators, large fund complexes, and multi-board governance platforms</p><ul><li>100+ funds / multi-trust</li><li>Full platform access</li><li>Custom AI skills</li><li>Implementation $10,000</li></ul><p class="tier__f">Deploy governance intelligence across the enterprise.</p></article>
-  </div>
-  <p class="wrap note reveal">All paid plans include the FundTrustIQ core governance platform, secure workspace, audit trail, and role-based access.</p>
-</section>
-
-<!-- ───────────── ENGAGEMENT ───────────── -->
-<section class="engage" id="engagement" aria-labelledby="en-h">
-  <div class="wrap">
-    <p class="eyebrow reveal">Engagement model</p>
-    <h2 id="en-h" class="h2 reveal measure">From discovery to live governance in three steps</h2>
-    <ol class="steps">
-      <li class="step reveal"><span class="step__n">01</span><h3 class="h3">Discover</h3><p class="step__s">Governance workflow and AI-skill assessment</p><ul><li>Review board materials and workflows</li><li>Identify priority committee use case</li><li>Map data sources, users, controls, and integration needs</li></ul></li>
-      <li class="step reveal" style="--d:.1s"><span class="step__n">02</span><h3 class="h3">Configure &amp; validate</h3><p class="step__s">Configure a pilot with validated use cases</p><ul><li>Configure workspaces, roles, and document taxonomy</li><li>Apply relevant AI skills and governance controls</li><li>Validate outputs with board support, compliance, and advisers</li></ul></li>
-      <li class="step reveal" style="--d:.2s"><span class="step__n">03</span><h3 class="h3">Launch &amp; scale</h3><p class="step__s">Production deployment and expansion roadmap</p><ul><li>Launch live board and committee workflows</li><li>Onboard trustees, officers, and service providers</li><li>Measure adoption, preparation time, exceptions, and follow-through</li></ul></li>
-    </ol>
   </div>
 </section>
 
@@ -578,7 +623,7 @@
       <a class="brand" href="#top" aria-label="FundTrust IQ home"><img src="assets/img/logo-mark.svg" alt="" width="30" height="26"><span class="brand__word">FundTrust<span> IQ</span></span></a>
       <p class="foot__tag">Where trust meets innovation</p>
     </div>
-    <nav aria-label="Footer"><a class="link-u" href="#demo">Product</a><a class="link-u" href="#modules">Governance</a><a class="link-u" href="#solution">Platform</a><a class="link-u" href="#ai">AI skills</a><a class="link-u" href="#pricing">Pricing</a><a class="link-u" href="#engagement">Engagement</a></nav>
+    <nav aria-label="Footer"><a class="link-u" href="#demo">Product</a><a class="link-u" href="#modules">Governance</a><a class="link-u" href="#solution">Platform</a><a class="link-u" href="#contact">Request a demo</a></nav>
     <address><a class="link-u" href="mailto:hello@fundtrustiq.com">hello@fundtrustiq.com</a><a class="link-u" href="tel:+14159350474">+1 415-935-0474</a><a class="link-u" href="https://www.fundtrustiq.com">www.fundtrustiq.com</a></address>
   </div>
   <div class="wrap foot__base"><span>© <span data-year>2026</span> FundTrustIQ</span><span>Patent pending</span></div>

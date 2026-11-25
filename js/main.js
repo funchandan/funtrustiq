@@ -241,16 +241,64 @@
     if (px && !RM) { const r = px.parentElement.parentElement.getBoundingClientRect(); px.style.setProperty('--py', ((r.top + r.height / 2 - innerHeight / 2) * -.12) + 'px'); }
   };
 
-  /* ── Tabs (WAI-ARIA) ── */
-  $$('[data-tabs]').forEach(t => {
-    const tabs = $$('[role=tab]', t);
-    const sel = tab => tabs.forEach(x => { const on = x === tab; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1;
-      const p = d.getElementById(x.getAttribute('aria-controls')); p.hidden = !on; p.classList.toggle('is-active', on); });
-    tabs.forEach((x, i) => {
-      x.addEventListener('click', () => sel(x));
-      x.addEventListener('keydown', e => { const k = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
-        if (k) { e.preventDefault(); const n = tabs[(i + k + tabs.length) % tabs.length]; sel(n); n.focus(); } });
+  /* ── Platform modules structure UI ── */
+  $$('[data-apps]').forEach(root => {
+    const tabs = $$('.apps__pills [role=tab]', root);
+    const panels = tabs.map(t => d.getElementById(t.getAttribute('aria-controls')));
+    const prev = $('[data-apps-prev]', root);
+    const next = $('[data-apps-next]', root);
+    let index = Math.max(0, tabs.findIndex(t => t.getAttribute('aria-selected') === 'true'));
+
+    const bindAccordion = panel => {
+      const side = $('[data-apps-side]', panel);
+      if (!side || side.dataset.bound) return;
+      side.dataset.bound = '1';
+      $$('.apps__acc', side).forEach(acc => {
+        const btn = $('.apps__acc-btn', acc);
+        const list = $('.apps__checks', acc);
+        if (!btn || !list) return;
+        btn.addEventListener('click', () => {
+          const open = !acc.classList.contains('is-open');
+          $$('.apps__acc', side).forEach(other => {
+            const on = other === acc && open;
+            other.classList.toggle('is-open', on);
+            const b = $('.apps__acc-btn', other), l = $('.apps__checks', other);
+            if (b) b.setAttribute('aria-expanded', on ? 'true' : 'false');
+            if (l) l.hidden = !on;
+          });
+        });
+      });
+    };
+
+    const show = i => {
+      index = (i + tabs.length) % tabs.length;
+      tabs.forEach((t, n) => {
+        const on = n === index;
+        t.setAttribute('aria-selected', on);
+        t.tabIndex = on ? 0 : -1;
+        const p = panels[n];
+        if (!p) return;
+        p.hidden = !on;
+        p.classList.toggle('is-active', on);
+        if (on) bindAccordion(p);
+      });
+    };
+
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => show(i));
+      t.addEventListener('keydown', e => {
+        const k = { ArrowRight: 1, ArrowLeft: -1, Home: 'home', End: 'end' }[e.key];
+        if (k == null) return;
+        e.preventDefault();
+        if (k === 'home') show(0);
+        else if (k === 'end') show(tabs.length - 1);
+        else show(i + k);
+        tabs[index].focus();
+      });
     });
+    if (prev) prev.addEventListener('click', () => show(index - 1));
+    if (next) next.addEventListener('click', () => show(index + 1));
+    show(index);
   });
 
   /* ── Product demo: 4 steps, loading phases, autoplay only while in view ── */
@@ -283,10 +331,10 @@
       if (!playing || RM || !inView) return;
       const bar = $('.demo__bar', tabs[index]);
       if (!bar) return;
-      requestAnimationFrame(() => requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
         bar.style.transition = `transform ${STEP_MS}ms linear`;
         bar.style.transform = 'scaleX(1)';
-      }));
+      });
     };
     const arm = () => {
       clearAuto();
@@ -386,6 +434,7 @@
           el.classList.add('is-jumped');
           el.focus({ preventScroll: true });
           el.scrollIntoView({ block: 'nearest', behavior: RM ? 'auto' : 'smooth' });
+          return;
         }
         const role = e.target.closest('[data-role]');
         if (!role) return;
@@ -395,13 +444,7 @@
       });
     }
     syncAutoBtn();
-    if (!RM) {
-      panels[0].dataset.phase = 'load';
-      panels[0].setAttribute('aria-busy', 'true');
-    } else {
-      panels[0].dataset.phase = 'ready';
-      panels[0].setAttribute('aria-busy', 'false');
-    }
+    setPhase(panels[0], RM ? 'ready' : 'load');
     const setLive = on => {
       const was = inView;
       inView = on;
