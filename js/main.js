@@ -199,31 +199,33 @@
     if (r.bottom > 0 && r.top < innerHeight) { vis = true; layout(); }
     api.sync();
   }
-  const SKY = '#c4e8f8', SKY2 = '#9fd6f2', NAVY = '#14315f', NAVY2 = '#1f396d', ICE = '#f7fbfd', BLUE = '#2a7fba';
+  /* Blade colors tuned for contrast on the light mesh (ice/pale sky washed out before). */
+  const SKY = '#58bceb', SKY2 = '#3aa6d8', NAVY = '#071530', NAVY2 = '#0b1f3f', MID = '#1f396d', BLUE = '#00609e';
   const hero = $('[data-hero-art]');
   // a = start angle (0 = 12 o'clock, clockwise), th = wedge width, r = radius × viewport
+  // Origin sits on the right so the fan clears the left hero copy.
   if (hero) Fan(hero, {
-    px: w => w < 700 ? .97 : .93, py: w => w < 700 ? .05 : .07, start: 168,
-    scale: (w, h) => w < 700 ? h * .62 : Math.max(w, h * 1.4),
+    px: w => w < 700 ? 1.02 : .98, py: w => w < 700 ? .02 : .04, start: 168,
+    scale: (w, h) => w < 700 ? h * .72 : Math.max(w * 1.05, h * 1.55),
     blades: [
-      { a: 178, th: 26, r: .46, c: NAVY, blur: 18, amp: 2, sp: .3, par: .6, z: 1 },
-      { a: 208, th: 20, r: .4, c: NAVY2, blur: 14, amp: 2.4, sp: .26, par: .8, z: 1 },
-      { a: 166, th: 10, r: .34, c: BLUE, blur: 22, amp: 3, sp: .42, par: .5, z: 2 },
-      { a: 172, th: 15, r: .62, c: SKY, blur: 0, amp: 1.8, sp: .38, par: 1.3, z: 4 },
-      { a: 197, th: 16, r: .7, c: SKY2, blur: 0, amp: 2.2, sp: .3, par: 1.5, z: 5 },
-      { a: 224, th: 14, r: .64, c: ICE, blur: 0, amp: 2.6, sp: .27, par: 1.7, z: 6 },
-      { a: 248, th: 13, r: .74, c: SKY, blur: 0, amp: 2.4, sp: .24, par: 1.9, z: 6 },
-      { a: 213, th: 5, r: .86, c: '#e3f3fb', blur: 2, amp: 1.6, sp: .2, par: 2.2, z: 7 },
+      { a: 178, th: 28, r: .5, c: NAVY, blur: 10, amp: 2, sp: .3, par: .55, z: 1 },
+      { a: 208, th: 22, r: .44, c: NAVY2, blur: 8, amp: 2.4, sp: .26, par: .7, z: 1 },
+      { a: 166, th: 12, r: .38, c: BLUE, blur: 12, amp: 3, sp: .42, par: .45, z: 2 },
+      { a: 172, th: 16, r: .66, c: MID, blur: 0, amp: 1.8, sp: .38, par: 1.2, z: 4 },
+      { a: 197, th: 17, r: .74, c: BLUE, blur: 0, amp: 2.2, sp: .3, par: 1.4, z: 5 },
+      { a: 224, th: 15, r: .68, c: SKY2, blur: 0, amp: 2.6, sp: .27, par: 1.6, z: 6 },
+      { a: 248, th: 14, r: .78, c: SKY, blur: 0, amp: 2.4, sp: .24, par: 1.8, z: 6 },
+      { a: 213, th: 6, r: .9, c: '#8fd1f1', blur: 1, amp: 1.6, sp: .2, par: 2, z: 7 },
     ]
   });
   const fin = $('[data-final-art]');
   if (fin) Fan(fin, {
     px: w => w < 700 ? 1.05 : .96, py: () => .95, start: 300,
     blades: [
-      { a: 282, th: 16, r: .42, c: NAVY2, blur: 14, amp: 2, sp: .3, par: .5, z: 1 },
-      { a: 300, th: 10, r: .55, c: SKY, blur: 0, amp: 2, sp: .25, par: 1, z: 3 },
-      { a: 316, th: 8, r: .5, c: ICE, blur: 0, amp: 2.5, sp: .3, par: 1.4, z: 4 },
-      { a: 330, th: 9, r: .38, c: SKY2, blur: 6, amp: 2, sp: .35, par: 1.2, z: 2 },
+      { a: 282, th: 16, r: .42, c: NAVY2, blur: 10, amp: 2, sp: .3, par: .5, z: 1 },
+      { a: 300, th: 11, r: .55, c: BLUE, blur: 0, amp: 2, sp: .25, par: 1, z: 3 },
+      { a: 316, th: 9, r: .5, c: SKY, blur: 0, amp: 2.5, sp: .3, par: 1.4, z: 4 },
+      { a: 330, th: 10, r: .4, c: SKY2, blur: 4, amp: 2, sp: .35, par: 1.2, z: 2 },
     ]
   });
 
