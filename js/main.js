@@ -465,7 +465,7 @@
     });
   }
 
-  /* ── Governance ECG timeline. Path is rebuilt from the dots; the draw is scroll-linked. ── */
+  /* ── Governance ECG timeline. Path from dots; steps walk 01→04 in a loop. ── */
   const timeline = $('[data-timeline]');
   if (timeline) {
     const svg = $('[data-ecg-svg]', timeline);
@@ -474,7 +474,8 @@
     const beats = $$('[data-beat]', timeline);
     const points = beats.map(b => b.closest('.tpoint'));
     const grad = $('#ecg-grad');
-    let sig = '', lastP = -1;
+    const STEP_MS = 2400;
+    let sig = '', step = 0, timer = null, inView = false;
     const build = (pts, vertical, w, h) => {
       const n = v => v.toFixed(1);
       if (!pts.length) return '';
@@ -490,6 +491,21 @@
         path += ` L ${n(p.x)} ${n(p.y - 32)} L ${n(p.x - 8)} ${n(p.y - 14)} L ${n(p.x + 22)} ${n(p.y)} L ${n(p.x - 9)} ${n(p.y + 11)} L ${n(p.x)} ${n(p.y + 26)}`;
       });
       return path + ` L ${n(pts[pts.length - 1].x)} ${n(h)}`;
+    };
+    const paintStep = i => {
+      if (!points.length) return;
+      points.forEach((el, idx) => el.classList.toggle('is-on', idx === i));
+      const p = (i + 1) / points.length;
+      draw.style.strokeDashoffset = String(1 - p);
+    };
+    const stopWalk = () => { if (timer) { clearInterval(timer); timer = null; } };
+    const startWalk = () => {
+      if (RM || timer || !points.length) return;
+      paintStep(step);
+      timer = setInterval(() => {
+        step = (step + 1) % points.length;
+        paintStep(step);
+      }, STEP_MS);
     };
     const layoutTimeline = () => {
       const w = timeline.clientWidth, h = timeline.clientHeight;
@@ -512,30 +528,29 @@
       const dAttr = build(pts, vertical, w, h);
       base.setAttribute('d', dAttr);
       draw.setAttribute('d', dAttr);
-      lastP = -1;
       if (RM) {
         draw.style.strokeDashoffset = '0';
         points.forEach(p => p.classList.add('is-on'));
-      }
+      } else paintStep(step);
     };
-    onTimeline = () => {
-      if (RM || !sig) return;
-      const r = timeline.getBoundingClientRect();
-      const start = innerHeight * 0.92, end = innerHeight * 0.38;
-      const p = clamp((start - r.top) / (start - end), 0, 1);
-      if (Math.abs(p - lastP) < 0.004) return;
-      lastP = p;
-      draw.style.strokeDashoffset = String(1 - p);
-      points.forEach((el, i) => {
-        const on = p >= (i + 0.45) / points.length;
-        if (el.classList.contains('is-on') !== on) el.classList.toggle('is-on', on);
-      });
-    };
+    onTimeline = () => {};
     layoutTimeline();
     if (window.ResizeObserver) new ResizeObserver(() => layoutTimeline()).observe(timeline);
     else addEventListener('resize', layoutTimeline);
     if (d.fonts && d.fonts.ready) d.fonts.ready.then(layoutTimeline);
     if (RM) points.forEach(p => p.classList.add('is-on'));
+    else {
+      const tio = new IntersectionObserver(es => es.forEach(e => {
+        inView = e.isIntersecting;
+        if (inView) startWalk();
+        else stopWalk();
+      }), { threshold: .28 });
+      tio.observe(timeline);
+      d.addEventListener('visibilitychange', () => {
+        if (d.hidden) stopWalk();
+        else if (inView) startWalk();
+      });
+    }
   }
 
   /* ── Scroll sync. Lenis emits on the same frame it moves the window. ── */
