@@ -33,23 +33,25 @@
   --mist-300:#cfe0dc;        /* deck sage */
   --gray-200:#d3d9df;        /* muted display text, rules */
   --gray-300:#9aa7b4;
-  --gray-400:#4a5868;        /* secondary text (AA on mesh blobs + base) */
+  --gray-400:#3d4d5c;        /* secondary text (AA+ on light mesh) */
   --white:#ffffff;
 
-  /* ── Page mesh gradient (distinct pastels; ink + soft text AA) ── */
-  --mesh-mint:#bfe8e2;
-  --mesh-sky:#b7dff0;
-  --mesh-sage:#d4e8bc;
-  --mesh-lilac:#d9d2f0;
-  --mesh-base:#e6f0ee;
+  /* ── Page mesh gradient (lighter pastels; ink AAA, soft AA+) ── */
+  --mesh-mint:#d4f0eb;
+  --mesh-sky:#cfe8f6;
+  --mesh-sage:#e4f0d4;
+  --mesh-lilac:#e6e2f5;
+  --mesh-base:#eef5f3;
 
   /* ── Semantic ── */
   --bg:var(--mesh-base);
   --surface:var(--white);
-  --ink:var(--navy-600);
+  --ink:var(--navy-700);     /* deepest navy for max contrast on mesh */
   --ink-soft:var(--gray-400);
   --ink-muted:var(--gray-200);
-  --line:rgba(11,31,63,.12);
+  --ink-invert:#f4f8fb;      /* text on dark contrast-flip surfaces */
+  --ink-invert-soft:var(--navy-200);
+  --line:rgba(11,31,63,.14);
   --accent:var(--sky-400);
   --focus:#0079c7;
 
